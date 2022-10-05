@@ -1,15 +1,7 @@
 # TODO
-update at public szerver (github) + version number handling
-- egyreszt kell vmi public tarhely. Github idealis lenne a celra
-- az update url cim akar lehet konfigolhato is, szal ha bezarjak a githubot, lesz recovery. Az alap otlet az volt, h a mutyi http klienskent letolti es kesz. A triggert a webconfig ui-bol kapja. semmi automata update.
-- problema viszont a verzioszam ellenorzese. el akarom kerulni azt, h a mutyi github/gitlab api-t hasznaljon. Erre kene vmi megoldas. Akar az is lehet, h a webconfig felulet intezi. (lekeri a verzioszamot a mutyitol, felnez githubra lekeri, mik a lehetosegek, es ha van ujabb, akkor ratolja. Igy lehet, h a progress-kijelzes is egyszerusodik)
 
 # Dokumentálás
-Ahogy az IKEA csinalja. Celkozonseg: telefont kezelni tudo, de SIP-hez semmit nem erto emberek
 https://www.overleaf.com/project/6087b99d3619c884e0701cfa
-
-# Tesztelés
-androidon, iphoneon
 
 # Beüzemelés
 1. Tápot kell neki adni. Szét kell szerelni és a USB micro aljzatba be kell dugni egy micro USB telefontöltőt vagy micro USB kábelt.
@@ -20,9 +12,7 @@ androidon, iphoneon
     - beszélőt levenni
     - hookswitch gombot benyomni és nyomva tartani kézzel
     - (kapunyito gomb) hosszan nyomni : STA mód
-    - (kapunyito gomb) három gyors egymásutáni rövid benyomása:  AP mód
-
-Kesőbb APSTA mód lesz, nem lesz kettő.
+    - (kapunyito gomb) három gyors egymásutáni rövid benyomása:  AP/STA mód
 
 ## Infó
 AP vagy STA módban is:
@@ -42,75 +32,13 @@ gzip -f < index.html > index.html.gz
 ```
 
 ### Travis build
-https://app.travis-ci.com/github/dobrosi/jozsefutca
+https://app.travis-ci.com/github/dobrosi/kaputelefon-frontend
 
 ### Releases
-https://github.com/dobrosi/jozsefutca/releases
+https://github.com/dobrosi/kaputelefon-frontend/releases
 
 # REST API
-Első draft HTML:
 
-```html
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><META http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>
-<div>
-    <form action="http:///kapu" method="post" target="_blank" onsubmit="try {return window.confirm(&quot;Lehetséges, hogy ez az űrlap nem fog megfelelően működni bizonyos biztonsági okokból kifolyólag.\nFolytatja?&quot;);} catch (e) {return false;}">
-        <h3>Kaputelefon Típus</h3>
-        <input type="radio" name="type" value="codefon" checked>
-        <label>Codefon</label><br>
-        <input type="radio" name="type" value="MKT" disabled>
-        <label>MKT</label><br>
-        <input type="radio" name="type" value="proel" disabled>
-        <label>Rainman</label><br><br>
-        <label>Kód:</label>
-        <input type="text" name="code" title="1-127"><br>
-        <input type="submit" name="submitbutton" value="Submit">
-    </form>
-    <form action="http:///auth" method="post" target="_blank" onsubmit="try {return window.confirm(&quot;Lehetséges, hogy ez az űrlap nem fog megfelelően működni bizonyos biztonsági okokból kifolyólag.\nFolytatja?&quot;);} catch (e) {return false;}">
-        <h3>Wifi</h3>
-        <label>SSID:</label>
-        <input type="text" name="SSID"><br>
-        <label>Jelszó:</label>
-        <input type="password" name="wpass"><br>
-        <input type="submit" name="submitbutton" value="Submit">
-    </form>
-    <form action="http:///contact" method="post" target="_blank" onsubmit="try {return window.confirm(&quot;Lehetséges, hogy ez az űrlap nem fog megfelelően működni bizonyos biztonsági okokból kifolyólag.\nFolytatja?&quot;);} catch (e) {return false;}">
-        <h3>VOIP kontakt</h3>
-        <label>Hivandó kontakt:</label>
-        <input type="text" name="contact"><br><br>
-        <input type="submit" name="submitbutton" value="Submit">
-    </form>
-    <form action="http:///account" method="post" target="_blank" onsubmit="try {return window.confirm(&quot;Lehetséges, hogy ez az űrlap nem fog megfelelően működni bizonyos biztonsági okokból kifolyólag.\nFolytatja?&quot;);} catch (e) {return false;}">
-        <h3>VOIP regisztráció</h3>
-        <label>Account:</label>
-        <input type="text" name="acc"><br>
-        <label>Jelszó:</label>
-        <input type="password" name="spass"><br>
-        <label>Transfer:</label>
-        <select name="ttype">
-            <option value="UDP">UDP</option>
-            <option value="TCP">TCP</option>
-        </select><br>
-        <label>Outbound:</label>
-        <input type="text" name="outbound"><br>
-        <input type="submit" name="submitbutton" value="Submit">
-    </form>
-</div>
-</body></html>
-```
-Vannak a fileok, amik a sip stack-bol vannak:
-- /accounts, 
-- /config (ez szerintem nem lesz vegul)
-- /contacts. Csatolok peldakat. Egyszerusodne az eletem, ha ezek igy maradnanank, de nem nagy munka atcsinalni ezeket.
-
-Van meg a /ota, ahova PUT-tal be lehet tolteni az applikacio binarist. Az update fejlesztes kozben is igy megy.
-Tehat:
-/ota: binaris applikacio update
-pelda: (az elso sor lekeri az IP-t multicast dnssel. ezt tamogatja az android meg az ios is)
-```bash
-$(eval IP := $(shell avahi-resolve -n kaputelefon.local | head -1 | cut -f 2))
-curl -# -X PUT --data-binary @$(APP_BIN) $(IP)/ota -o /dev/null
-curl -X PUT $(IP)/reset   --> ujrainditas, lasd lejjebb
-```
 ## Fájlok
 
 ### /file/accounts - *GET, PUT*
@@ -199,9 +127,8 @@ Content-Encoding: gzip
 
 ### /api/auth - *GET, PUT*
 wifi parameterek
-
 ```
-curl -X PUT 192.168.0.20/wifi_settings?password=12345678\&ssid=f
+curl -X PUT kaputelefon.local/wifi_settings?password=12345678\&ssid=f
 ```
 
 ### /api/icom - *GET, PUT*
@@ -215,31 +142,35 @@ Itt ezeket lehet beallitani:
 - code: kapukod (marmint a keszulek kodja: 1-255)
 
 ```
-curl -X PUT 192.168.0.47/icom?gvol=8
+curl -X PUT kaputelefon.local/icom?gvol=8
 ```
 
 ### /api/factory_reset - *GET, PUT*
 Factory reset.
 
 ### /api/mac - *GET*
-MAC cim. Ennek majd az eol deploymentnel lesz ertelme.
+MAC cim.
 
 ### /api/testcall - *GET*
-Teszthivas. Ilyen button is kell majd a guira.
+Teszthivas.
 
 ### /api/appversion - *GET*
 Applikacio verziot lehet itt lekerni.
 
 ### /api/ota - *PUT*
 Firmware feltöltés.
-
 ```
-curl -X PUT --binary-data @kapu_voip-kapu_voip.0.1.14.fw 192.168.0.47/api/ota
+curl -X PUT --binary-data @kapu_voip-kapu_voip.0.1.14.fw kaputelefon.local/api/ota
+```
+All-in-one megoldás
+```bash
+$(eval IP := $(shell avahi-resolve -n kaputelefon.local | head -1 | cut -f 2))
+curl -# -X PUT --data-binary @$(APP_BIN) $(IP)/ota -o /dev/null
+curl -X PUT $(IP)/reset   --> ujrainditas, lasd lejjebb
 ```
 
 ### /file/html - *PUT*
 Index.html feltöltés.
-
 ```
-curl -X PUT --binary-data @index.html.gz 192.168.0.47/file/html
+curl -X PUT --binary-data @index.html.gz kaputelefon.local/file/html
 ```

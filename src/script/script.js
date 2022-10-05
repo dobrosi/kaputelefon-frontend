@@ -141,8 +141,8 @@ function ajax(protocol, action, successCallback, data, finishCallback) {
 		        }
 		}
 		if (finishCallback != null) {
-                        finishCallback(this);
-                }
+                finishCallback(this);
+        }
 	};
 	action = action.startsWith('http') ? action : createUrl(action);
 	xhr.open(protocol, action, true);
@@ -252,12 +252,17 @@ function saveForm(event) {
 function saveFile(form) {
 	let d;
 	let action;
+	let callback = null;
 	if (form.id == 'indexFileForm') {
+		showLoading('Folyamatban...');
 		action = '/file/html';
 		d = getFile(form);
+		callback = closeLoading;
 	} else if (form.id == 'otaFileForm') {
+		showLoading('Folyamatban...');
 		action = '/api/ota';
 		d = getFile(form);
+		callback = closeLoading;
 	} else if (form.id == 'phonebookForm') {
 		action = actionContacts;
 		d = getContacts(form);
@@ -265,7 +270,7 @@ function saveFile(form) {
 		action = actionAccounts;
 		d = getAccounts(form);
 	}
-	ajax('PUT', action, null, d);
+	ajax('PUT', action, null, d, callback);
 }
 
 function getFile(form) {

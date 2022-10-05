@@ -130,24 +130,27 @@
 				<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionPhonebook">
 					<div class="accordion-body">
 						<form id="phonebookForm" class="needs-validation" novalidate>
-							<div class="mb-3 kt-contact">
-								<label for="name1TextField">Név</label>
-								<input name="name1TextField" type="text" class="form-control" id="name1TextField" placeholder="Név" required>
-								<div class="invalid-feedback">Kötelező értéket megadni.</div>
+							<div class="kt-contact">
+								<div class="mb-3">
+									<label for="name1TextField">Név</label>
+									<input name="name1TextField" type="text" class="form-control" id="name1TextField" placeholder="Név" required>
+									<div class="invalid-feedback">Kötelező értéket megadni.</div>
+								</div>
+								<div class="mb-3">
+									<label for="sip1TextField">VOIP felhasználói név</label>
+									<input name="sip1TextField" type="text" class="form-control" id="sip1TextField" placeholder="VOIP felhasználói név" required>
+									<div class="invalid-feedback">Kötelező értéket megadni.</div>
+								</div>
 							</div>
-							<div class="mb-3">
-								<label for="sip1TextField">VOIP felhasználói név</label>
-								<input name="sip1TextField" type="text" class="form-control" id="sip1TextField" placeholder="VOIP felhasználói név" required>
-								<div class="invalid-feedback">Kötelező értéket megadni.</div>
-							</div>
-
-							<div class="mb-3 kt-contact hidden">
-								<label for="name2TextField">2. Név</label>
-								<input name="name2TextField" type="text" class="form-control" id="name2TextField" placeholder="Név">
-							</div>
-							<div class="mb-3 hidden">
-								<label for="sip2TextField">2. SIP</label>
-								<input name="sip2TextField" type="text" class="form-control" id="sip2TextField" placeholder="SIP">
+							<div class="kt-contact hidden">
+								<div class="mb-3">
+									<label for="name2TextField">2. Név</label>
+									<input name="name2TextField" type="text" class="form-control" id="name2TextField" placeholder="Név">
+								</div>
+								<div class="mb-3">
+									<label for="sip2TextField">2. VOIP felhasználói név</label>
+									<input name="sip2TextField" type="text" class="form-control" id="sip2TextField" placeholder="2. VOIP felhasználói név">
+								</div>
 							</div>
 							<button type="submit" class="btn btn-primary">Mentés</button>
 						</form>

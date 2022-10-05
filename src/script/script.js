@@ -33,6 +33,7 @@ function initGui() {
 	toastError = new bootstrap.Toast(document.getElementById('toastError'));
 	not_connected = document.querySelector('#not_connected');
 	initAdvancedMode();
+	initTypeSelect();
 	initForms();
 	document.getElementById("versionDiv").innerHTML = version;
     getFirmwareVersion();
@@ -61,6 +62,12 @@ function initLog() {
 		log(msg);
 		oldlog(msg);
 	}
+}
+
+function initTypeSelect() {
+    document.getElementById('typeSelect').addEventListener('change', function() {
+        showHide('.codeBlock', this.value!='mkt');
+    });
 }
 
 function initAdvancedMode() {
@@ -147,8 +154,8 @@ function switchAdvanced(moreAdvancedMode) {
 	let v = document.getElementById('advancedSwitcher').checked;
 	configuration.advancedMode = v;
 	saveConfiguration();
-        showHide('.kt-advanced', v);
-        showHide('.kt-more-advanced', moreAdvancedMode);
+    showHide('.kt-advanced', v);
+    showHide('.kt-more-advanced', moreAdvancedMode);
 }
 
 function showHide(clazz, show) {

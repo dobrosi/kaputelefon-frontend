@@ -40,9 +40,11 @@ Index.html tömörített formátum előállítása:
 ```
 gzip -f < index.html > index.html.gz
 ```
-###Travis build
+
+### Travis build
 https://app.travis-ci.com/github/dobrosi/jozsefutca
-###Releases
+
+### Releases
 https://github.com/dobrosi/jozsefutca/releases
 
 # REST API

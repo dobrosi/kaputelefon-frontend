@@ -1,7 +1,7 @@
 #!/bin/sh
 
 build() {
-  export fev="1.$TRAVIS_BUILD_NUMBER"
+  export fev="1.1.$TRAVIS_BUILD_NUMBER"
   echo "var version = '$fev';" > src/script/version.js
 
   npm install -g gulp-cli

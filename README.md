@@ -1,8 +1,5 @@
 # TODO
 
-# Dokumentálás
-https://www.overleaf.com/project/6087b99d3619c884e0701cfa
-
 # Beüzemelés
 1. Tápot kell neki adni. Szét kell szerelni és a USB micro aljzatba be kell dugni egy micro USB telefontöltőt vagy micro USB kábelt.
 2. Konfigurációs mód: a kapunyitő gombbal lehetséges: úgy, hogy a beszélő a helyén van. Mivel a kapunyito gomb csak úgy nyomható meg, hogy le van véve a beszélő, ezért a hook switchet (amit a bészelő megnyom, amikor a helyen van),
@@ -174,6 +171,9 @@ Index.html feltöltés.
 ```
 curl -X PUT --binary-data @index.html.gz kaputelefon.local/file/html
 ```
+
+# Dokumentálás
+https://www.overleaf.com/project/6087b99d3619c884e0701cfa
 
 # Utils
 ## Asterisk

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="hu">
+<script>
+
+var sleepTime = 0;
+var host = 'http://192.168.4.1';
+
+ajax('/', true);
+ajax('/api/auth');
+ajax('/api/icom');
+ajax('/api/settings');
+ajax('/file/contacts');
+ajax('/file/accounts');
+
+function ajax(url, withoutResponseText) {
+    ajax(url, false);
+}
+
+function ajax(action, withoutResponseText) {
+  
+        let xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                let output = "<br>" + action + " => ";
+                if (this.status == 200) {
+                    output += withoutResponseText ? 'OK' : this.responseText;
+                } else {
+                    output += 'HIBA!';
+                }
+                document.getElementById('output').innerHTML += output;
+            }
+        };
+        xhr.open('GET', host + action, true);
+        xhr.overrideMimeType('text/json');
+        xhr.send();
+
+}
+</script>
+
+<body><div id="output"></body>

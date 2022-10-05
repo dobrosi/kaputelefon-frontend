@@ -12,6 +12,7 @@ var logfile;
 var logTimeout;
 var connected;
 var not_connected;
+var callback = null;
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	try {
@@ -212,13 +213,19 @@ function jsonToForm(f, data) {
 };
 
 function showInfo(msg) {
+    doCallback();
 	document.querySelector('#infoText').innerHTML = msg;
 	toastInfo.show();
 }
 
 function showError(msg) {
+    doCallback();
 	document.querySelector('#errorText').innerHTML = msg;
 	toastError.show();
+}
+
+function doCallback() {
+    if (callback != null) callback();
 }
 
 function showConnected(status) {
@@ -252,7 +259,6 @@ function saveForm(event) {
 function saveFile(form) {
 	let d;
 	let action;
-	let callback = null;
 	if (form.id == 'indexFileForm') {
 		showLoading('Folyamatban...');
 		action = '/file/html';
@@ -270,7 +276,7 @@ function saveFile(form) {
 		action = actionAccounts;
 		d = getAccounts(form);
 	}
-	ajax('PUT', action, null, d, callback);
+	ajax('PUT', action, null, d);
 }
 
 function getFile(form) {

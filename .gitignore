@@ -1,0 +1,10 @@
+/kaputelefon/.idea/
+/.idea/
+/kaputelefon/.idea/
+/kaputelefon/kaputelefon.iml
+.vscode/launch.json
+kaputelefon/kaputelefon-frontend/index.html.gz
+work
+node_modules
+package-lock.json
+kaputelefon/kaputelefon-frontend/target/index.html.gz

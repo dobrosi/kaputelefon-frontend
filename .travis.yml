@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - '14'
+branches:
+  only:
+  - master
+script: .travis/script.sh
+deploy:
+  provider: releases
+  api_key: ${GH_TOKEN}
+  file: kaputelefon/kaputelefon-frontend/target/index.html.gz
+  skip_cleanup: true

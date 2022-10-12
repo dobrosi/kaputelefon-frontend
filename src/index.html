@@ -56,30 +56,6 @@
 <main role="main" class="container page" id="settings">
 	<div class="accordion" id="accordionSettings">
 		<div class="accordion-item">
-			<h2 class="accordion-header" id="headingOne">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-					Wifi beállítások
-				</button>
-			</h2>
-			<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
-				<div class="accordion-body">
-					<form action="/api/auth" class="needs-validation no-auto-submit" novalidate>
-						<div class="mb-3">
-							<label for="ssidText">SSID</label>
-							<input name="ssid" type="text" class="form-control" id="ssidText" placeholder="SSID" required>
-							<div class="invalid-feedback">Kötelező értéket megadni.</div>
-						</div>
-						<div class="mb-3">
-							<label for="passwordText">Jelszó</label>
-							<input name="password" type="password" class="form-control" id="passwordText" placeholder="Jelszó" required>
-							<div class="invalid-feedback">Kötelező értéket megadni.</div>
-						</div>
-						<button type="submit" class="btn btn-primary">Kapcsolódás</button>
-					</form>
-				</div>
-			</div>
-		</div>
-		<div class="accordion-item">
 			<h2 class="accordion-header" id="headingTwo">
 				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
 					Hívást kezdeményező VOIP fiók
@@ -106,7 +82,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="headingThree">
 				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -140,6 +115,30 @@
 							</div>
 						</div>
 						-->
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="accordion-item">
+			<h2 class="accordion-header" id="headingOne">
+				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+					Wifi beállítások
+				</button>
+			</h2>
+			<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+				<div class="accordion-body">
+					<form action="/api/auth" class="needs-validation no-auto-submit" novalidate>
+						<div class="mb-3">
+							<label for="ssidText">SSID</label>
+							<input name="ssid" type="text" class="form-control" id="ssidText" placeholder="SSID" required>
+							<div class="invalid-feedback">Kötelező értéket megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="passwordText">Jelszó</label>
+							<input name="password" type="password" class="form-control" id="passwordText" placeholder="Jelszó" required>
+							<div class="invalid-feedback">Kötelező értéket megadni.</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Kapcsolódás</button>
 					</form>
 				</div>
 			</div>

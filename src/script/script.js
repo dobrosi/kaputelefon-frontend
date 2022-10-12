@@ -13,6 +13,7 @@ var logTimeout;
 var connected;
 var not_connected;
 var callback = null;
+var keyupTimeout = null;
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	try {
@@ -46,16 +47,38 @@ function initForms() {
 	switchAdvanced(false);
 	document.querySelectorAll('form').forEach(function(form) {
 	    form.autocomplete = 'off';
-		form.addEventListener('submit', function(event) {
-			if (!form.checkValidity()) {
-				event.preventDefault()
-				event.stopPropagation()
-			} else {
-				saveForm(event);
-			}
-			form.classList.add('was-validated')
-		});
+	    if (form.className.includes('no-auto-submit')) {
+            form.addEventListener('submit', function(event) {
+                formSubmit(event, form)
+            });
+        } else {
+            form.querySelectorAll('input, select').forEach(function(input) {
+                input.addEventListener(input.type == 'password' || input.type == 'text' ? 'keyup' : 'change', function(event) {
+                    invokeKeyupTimeout(event, form);
+                });
+            });
+        }
 	});
+}
+
+function invokeKeyupTimeout(event, form) {
+    if (keyupTimeout != null) {
+        clearTimeout(keyupTimeout);
+    }
+    keyupTimeout = setTimeout(function() {
+        formSubmit(event, form);
+        keyupTimeout = null;
+    }, 1000);
+}
+
+function formSubmit(event, form) {
+    if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+    } else {
+        saveForm(event);
+    }
+    form.classList.add('was-validated');
 }
 
 function initLog() {

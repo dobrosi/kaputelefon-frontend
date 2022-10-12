@@ -12,7 +12,6 @@
 
 	<script inline src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 	<script inline src="https://cdn.jsdelivr.net/npm/ansi_up"></script>
-	<script inline src="https://cdn.jsdelivr.net/npm/rangy"></script>
 	<script inline src="https://cdn.jsdelivr.net/npm/moment"></script>
 	<script inline src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.24/dist/sweetalert2.all.min.js"></script>
 	<script inline src="script/version.js"></script>
@@ -24,7 +23,6 @@
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">Kaputelefon <div id="versionDiv"></div></a>
-			<div id="not_connected">Nincs kapcsolat</div>
 			<button id="navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -151,7 +149,7 @@
 		<div class="card">
 			<div class="card-body">
 				<div class="mb-3">
-					<button type="button" class="btn btn-primary" onclick="testCall()">Próba hívás</button>
+					<button type="button" class="btn btn-primary" onclick="testCall()">Próbahívás</button>
 					<button type="button" class="btn btn-primary" onclick="restart()">Újraindítás</button>
 					<div id="logInfoText"></div>
 				</div>
@@ -256,55 +254,19 @@
 							<button type="button" class="btn btn-primary" onclick="factoryReset()">Gyári beállítások visszaállítása</button>
 						</div>
 						<div class="mb-3">
-							<button type="button" class="btn btn-primary" onclick="checkUpdate()">Automatikus firmware frissítés</button>
+							<button type="button" class="btn btn-primary" onclick="checkUpdate()">Firmware frissítés</button>
 						</div>
 						<div class="mb-3">
 							<form id="otaFileForm" class="needs-validation" novalidate>
 								<input id="otaFile" name="otaFile" type="file" class="file hidden" data-show-preview="false" required>
-								<button type="button" class="btn btn-primary" onclick="document.getElementById('otaFile').click()">Firmware fájl kiválasztása és feltöltése</button>
+								<button type="button" class="btn btn-primary" onclick="document.getElementById('otaFile').click()">Firmware fájl feltöltés</button>
 							</form>
 						</div>
 						<div class="mb-3 kt-more-advanced">
 							<form id="indexFileForm" class="needs-validation" novalidate>
 								<input id="indexFile" name="indexFile" type="file" class="file hidden" data-show-preview="false" required>
-								<button type="button" class="btn btn-primary" onclick="document.getElementById('indexFile').click()">Index fájl kiválasztása és feltöltése</button>
+								<button type="button" class="btn btn-primary" onclick="document.getElementById('indexFile').click()">Index fájl feltöltés</button>
 							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="accordion-item kt-more-advanced">
-				<h2 class="accordion-header" id="headingAdminOne">
-					<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdminOne" aria-expanded="false" aria-controls="collapseAdminOne">
-						Log
-					</button>
-				</h2>
-
-				<div id="collapseAdminOne" class="accordion-collapse collapse show"  aria-labelledby="headingAdminOne">
-					<div class="accordion-body">
-						<div class="mb-3">
-								<div class="row">
-									<div class="col-sm">
-										<button type="button" class="btn btn-primary" onclick="clearLogfile()">Log törlése</button>
-									</div>
-									<div class="col-sm">
-										<select name="logsleep" class="form-select small" id="logsleep">
-											<option value="-1">Log frissítés</option>
-											<option value="0">0 sec</option>
-											<option value="1">1 sec</option>
-											<option value="3">3 sec</option>
-											<option value="5">5 sec</option>
-											<option value="10">10 sec</option>
-											<option value="15">15 sec</option>
-											<option value="30">30 sec</option>
-											<option value="60">1 min</option>
-										</select>
-									</div>
-								</div>
-						</div>
-						<div class="mb-3">
-							<pre id="logfile"></pre>
 						</div>
 					</div>
 				</div>
@@ -312,6 +274,23 @@
 
 			<div class="kt-more-advanced card">
 				<div class="card-body">
+					<div class="mb-3">
+						<label for="logsleep">Log (F12)</label>
+						<select name="logsleep" class="form-select small" id="logsleep">
+							<option value="-1">Log frissítés</option>
+							<option value="0">0 sec</option>
+							<option value="1">1 sec</option>
+							<option value="3">3 sec</option>
+							<option value="5">5 sec</option>
+							<option value="10">10 sec</option>
+							<option value="15">15 sec</option>
+							<option value="30">30 sec</option>
+							<option value="60">1 min</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<button type="button" class="btn btn-primary" onclick="open('','_blank', '').document.write('<html><body style=\'background-color: black;padding: 1px;color: lightgray;line-height: 17px;font-size: 16px;\'>' + logHtml + '</body></html>')">Log megtekintése</button>
+					</div>
 					<form action="/api/settings" class="needs-validation" novalidate>
 						<div class="mb-3">
 							<label for="testmodeText">Test mode</label>

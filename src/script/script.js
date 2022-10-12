@@ -8,14 +8,12 @@ var releaseUrl = 'https://api.github.com/repos/dobrosi/jozsefutca/releases/lates
 var corsProxyUrl = 'https://api.allorigins.win';
 var actionContacts = '/file/contacts';
 var actionAccounts = '/file/accounts';
-var logfile;
 var logTimeout;
-var connected;
-var not_connected;
 var callback = null;
 var keyupTimeout = null
 var lastChangeEvent;
 var lastChangeForm;
+var logHtml = '';
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	try {
@@ -31,17 +29,47 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 function initGui() {
 	initLogfile();
-	initLog();
     bsCollapse = new bootstrap.Collapse(document.getElementById('navbarSupportedContent'));
     toastInfo = new bootstrap.Toast(document.getElementById('toastInfo'));
 	toastError = new bootstrap.Toast(document.getElementById('toastError'));
-	not_connected = document.querySelector('#not_connected');
 	initAdvancedMode();
 	initTypeSelect();
 	initForms();
 	document.getElementById("versionDiv").innerHTML = version;
     getFirmwareVersion();
     getMacAddress();
+    log('Started');log('Started');log('Started');
+}
+
+function log(msg) {
+	log(msg, false);
+}
+
+function log(msg, server) {
+	let lines = msg.split('\n');
+	let datestr = moment().format('HH:mm:ss.SSS');
+	for(i in lines) {
+		let line = lines[i];
+		if(line.length == 0) continue;
+		if (line.length > 150) {
+			line = line.substr(0, 150) + '...';
+		}
+		line = ansi_up.ansi_to_html("\033[1;100;97m" + datestr + (server ? ' S ' : ' C ') + "\033[1;37;40m") + ansi_up.ansi_to_html(line);
+		logHtml += line + "<br>";
+		let words = line.split('</span>');
+        words.pop();
+		let format = '';
+		line = '';
+		let pairs = new Array();
+		for(j in words) {
+		    let word = words[j];
+		    let pair = word.substring(13).split("\">");
+		    format += '%c %s '
+		    pairs.push(pair[0]);
+		    pairs.push(pair[1]);
+		}
+		console.log(format, ...pairs);
+	}
 }
 
 function initForms() {
@@ -101,14 +129,6 @@ function saveForm(form) {
 	}
 }
 
-function initLog() {
-	let oldlog = console.log;
-	console.log = function(msg) {
-		log(msg);
-		oldlog(msg);
-	}
-}
-
 function initTypeSelect() {
     document.getElementById('typeSelect').addEventListener('change', function() {
         showHide('.codeBlock', this.value!='mkt');
@@ -124,7 +144,6 @@ function initAdvancedMode() {
 }
 
 function initLogfile() {
-	logfile = document.querySelector("#logfile");
 	let logsleep = document.querySelector('#logsleep');
 	logsleep.addEventListener('change', function() {
         setLogTimeout(this.value);
@@ -172,9 +191,7 @@ function ajax(protocol, action, successCallback, data, finishCallback) {
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4) {
-			//showConnected(this.status);
 			if (this.status == 200) {
-				not_connected.style.display = 'none';
 				if (successCallback != null) {
 					successCallback(this);
 				} else {
@@ -278,18 +295,6 @@ function showError(msg) {
 
 function doCallback() {
     if (callback != null) callback();
-}
-
-function showConnected(status) {
-	if (status == 0) {
-		connected = false;
-	} else {
-		if (!connected) {
-		//	loadFormsData();
-		}
-		connected = true;
-	}
-	not_connected.style.display = connected ? 'none' : 'block';
 }
 
 function createUrl(action) {
@@ -436,74 +441,11 @@ function saveSelection(containerEl) {
     };
 }
 
-function restoreSelection(containerEl, savedSel) {
-    var charIndex = 0, range = rangy.createRange(), foundStart = false, stop = {};
-    range.collapseToPoint(containerEl, 0);
-
-    function traverseTextNodes(node) {
-        if (node.nodeType == 3) {
-            var nextCharIndex = charIndex + node.length;
-            if (!foundStart && savedSel.start >= charIndex && savedSel.start <= nextCharIndex) {
-                range.setStart(node, savedSel.start - charIndex);
-                foundStart = true;
-            }
-            if (foundStart && savedSel.end >= charIndex && savedSel.end <= nextCharIndex) {
-                range.setEnd(node, savedSel.end - charIndex);
-                throw stop;
-            }
-            charIndex = nextCharIndex;
-        } else {
-            for (var i = 0, len = node.childNodes.length; i < len; ++i) {
-                traverseTextNodes(node.childNodes[i]);
-            }
-        }
-    }
-
-    try {
-        traverseTextNodes(containerEl);
-    } catch (ex) {
-        if (ex == stop) {
-            rangy.getSelection().setSingleRange(range);
-        } else {
-            throw ex;
-        }
-    }
-}
-
-function log(msg) {
-	log(msg, false);
-}
-
-function log(msg, server) {
-	var savedSel = saveSelection(logfile);
-	let scrolling = logfile.scrollHeight - logfile.offsetHeight - logfile.scrollTop < 1;
-	let lines = msg.split('\n');
-	let datestr = moment().format('HH:mm:ss.SSS');
-	for(i in lines) {
-		let line = lines[i];
-		if(line.length == 0) continue;
-		if (line.length > 150) {
-			line = line.substr(0, 150) + '...';
-		}
-		line = ansi_up.ansi_to_html("\033[1;100;97m" + datestr + (server ? ' S' : ' C') + "\033[1;37;40m") + ' <b>' + ansi_up.ansi_to_html(line);
-		logfile.innerHTML += line + '</b><br>';
-	}
-	if (scrolling) {
-		logfile.scrollTop = logfile.scrollHeight;
-	}
-	restoreSelection(logfile, savedSel);
-}
-
 function receiveLogfile(timeout) {
 	ajax('GET', '/api/logfile', (response) => {
 		log(response.responseText, true);
 		logTimeout = setTimeout(() => receiveLogfile(timeout), timeout * 1000 + 100);
-
 	});
-}
-
-function clearLogfile() {
-	logfile.innerHTML = '';
 }
 
 function checkUpdate() {

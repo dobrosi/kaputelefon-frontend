@@ -166,11 +166,13 @@ function ajax(protocol, action, successCallback, data, finishCallback) {
 				if (successCallback != null) {
 					successCallback(this);
 				} else {
-					showInfo(this.responseText === "" ? "Kész" : this.responseText);
+				    if(this.responseText != "") {
+					    showInfo(this.responseText);
+					}
 				}
 			} else {
 				showError(this.status + ": " + this.statusText);
-		        }
+		    }
 		}
 		if (finishCallback != null) {
                 finishCallback(this);

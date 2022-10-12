@@ -38,7 +38,6 @@ function initGui() {
 	document.getElementById("versionDiv").innerHTML = version;
     getFirmwareVersion();
     getMacAddress();
-    log('Started');log('Started');log('Started');
 }
 
 function log(msg) {
@@ -70,6 +69,14 @@ function log(msg, server) {
 		}
 		console.log(format, ...pairs);
 	}
+}
+
+function openLog() {
+    open('','_blank', '').
+        document.write(
+            '<html><body style=\'background-color: black;padding: 1px;color: lightgray;line-height: 17px;font-size: 16px;\'>' +
+            logHtml +
+            '</body></html>');
 }
 
 function initForms() {

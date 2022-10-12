@@ -20,7 +20,6 @@
 </head>
 
 <body>
-
 <header>
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
 		<div class="container-fluid">
@@ -34,7 +33,7 @@
 					<li class="nav-item">
 						<a class="nav-link" href="#settings" onclick="menu(this)">Beállítások</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item kt-advanced">
 						<a class="nav-link" href="#admin" onclick="menu(this)">Szervíz</a>
 					</li>
 				</ul>
@@ -44,29 +43,8 @@
 </header>
 
 <!-- Begin page content -->
-<main role="main" class="container">
-	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; width: 200px;">
-		<div id="toastInfo" class="toast align-items-center hide" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="toast-header text-white bg-success">
-				<strong class="me-auto">Üzenet</strong>
-				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-			</div>
-			<div class="toast-body" id="infoText">
-			</div>
-		</div>
-	</div>
-	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; width: 200px;">
-		<div id="toastError" class="toast align-items-center hide" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="toast-header text-white bg-danger">
-				<strong class="me-auto">Hiba</strong>
-				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-			</div>
-			<div class="toast-body" id="errorText">
-			</div>
-		</div>
-	</div>
-
-	<div class="page" id="settings">
+<main role="main" class="container page" id="settings">
+	<div>
 		<div class="accordion" id="accordionSettings">
 			<div class="accordion-item">
 				<h2 class="accordion-header" id="headingOne">
@@ -74,7 +52,7 @@
 						Wifi beállítások
 					</button>
 				</h2>
-				<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionSettings">
+				<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
 					<div class="accordion-body">
 						<form action="/api/auth" class="needs-validation" novalidate>
 							<div class="mb-3">
@@ -84,10 +62,10 @@
 							</div>
 							<div class="mb-3">
 								<label for="passwordText">Jelszó</label>
-								<input name="password" type="text" class="form-control" id="passwordText" placeholder="Jelszó" required>
+								<input name="password" type="password" class="form-control" id="passwordText" placeholder="Jelszó" required>
 								<div class="invalid-feedback">Kötelező értéket megadni.</div>
 							</div>
-							<button type="submit" class="btn btn-primary">Mentés</button>
+							<button type="submit" class="btn btn-primary">Kapcsolódás</button>
 						</form>
 					</div>
 				</div>
@@ -98,7 +76,7 @@
 						Hívást kezdeményező VOIP fiók
 					</button>
 				</h2>
-				<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionSettings">
+				<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
 					<div class="accordion-body">
 						<form id="accountForm" class="needs-validation" novalidate>
 							<div class="mb-3">
@@ -108,14 +86,13 @@
 							</div>
 							<div class="mb-3">
 								<label for="accountPasswordTextField">Jelszó</label>
-								<input name="accountPasswordTextField" type="text" class="form-control" id="accountPasswordTextField" placeholder="Jelszó" required>
+								<input name="accountPasswordTextField" type="password" class="form-control" id="accountPasswordTextField" placeholder="Jelszó" required>
 								<div class="invalid-feedback">Kötelező értéket megadni.</div>
 							</div>
 							<div class="mb-3">
 								<label for="accountOutboundTextField">Outbound proxy</label>
 								<input name="accountOutboundTextField" type="text" class="form-control" id="accountOutboundTextField" placeholder="Outbound proxy">
 							</div>
-							<button type="submit" class="btn btn-primary">Mentés</button>
 						</form>
 					</div>
 				</div>
@@ -127,7 +104,7 @@
 						Hívást fogadó VOIP fiók
 					</button>
 				</h2>
-				<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#accordionPhonebook">
+				<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree">
 					<div class="accordion-body">
 						<form id="phonebookForm" class="needs-validation" novalidate>
 							<div class="kt-contact">
@@ -152,180 +129,144 @@
 									<input name="sip2TextField" type="text" class="form-control" id="sip2TextField" placeholder="2. VOIP felhasználói név">
 								</div>
 							</div>
-							<button type="submit" class="btn btn-primary">Mentés</button>
 						</form>
 					</div>
 				</div>
 			</div>
-
-
-			<div class="accordion-item">
-				<h2 class="accordion-header" id="headingFour">
-					<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-						Kapu beállítások
-					</button>
-				</h2>
-				<div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour" data-bs-parent="#accordionSettings">
-					<div class="accordion-body">
-						<form action="/api/icom" class="needs-validation" novalidate>
-							<div class="mb-3 kt-advanced">
-								<label for="ivolText">Csengetés hangerő</label>
-								<input name="ivol" type="number" class="form-control" id="ivolText" placeholder="Csengetés hangerő" min="0" max="100" required>
-								<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<div class="mb-3 kt-advanced">
-								<label for="rvolText">Ajtócsengő hangerő</label>
-								<input name="rvol" type="number" class="form-control" id="rvolText" placeholder="Ajtócsengő hangerő" min="0" max="255" required>
-								<div class="invalid-feedback">0-255 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<div class="mb-3 kt-advanced">
-								<label for="cvolText">Beep hangerő</label>
-								<input name="cvol" type="number" class="form-control" id="cvolText" placeholder="Beep hangerő" min="0" max="100" required>
-								<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<div class="mb-3 kt-advanced">
-								<label for="hvolText">Fejhallgató hangerő</label>
-								<input name="hvol" type="number" class="form-control" id="hvolText" placeholder="Fejhallgató hangerő" min="0" max="100" required>
-								<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<div class="mb-3 kt-advanced">
-								<label for="vvolText">Vonali audió feszültség</label>
-								<input name="vvol" type="number" class="form-control" id="vvolText" placeholder="Vonali audió feszültség" min="0" max="100" required>
-								<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<div class="mb-3 kt-advanced">
-								<label for="lvolText">Vonali audió hangerő</label>
-								<input name="lvol" type="number" class="form-control" id="lvolText" placeholder="Vonali audió hangerő" min="0" max="100" required>
-								<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<div class="mb-3 kt-advanced">
-								<label for="hdpxText">HDPX</label>
-								<input name="hdpx" type="hidden" value="0">
-								<input name="hdpx" class="form-check-input" type="checkbox" value="1" id="hdpxText">
-							</div>
-							<div class="mb-3 kt-advanced">
-								<label for="staText">STA</label>
-								<input name="sta" type="hidden" value="0">
-								<input name="sta" class="form-check-input" type="checkbox" value="1" id="staText">
-							</div>
-							<div class="mb-3 kt-advanced">
-								<label for="voipText">VOIP</label>
-								<input name="voip" type="hidden" value="0">
-								<input name="voip" class="form-check-input" type="checkbox" value="1" id="voipText">
-							</div>
-							<div class="mb-3 kt-advanced">
-								<label for="flogText">FLOG</label>
-								<input name="flog" type="hidden" value="0">
-								<input name="flog" class="form-check-input" type="checkbox" value="1" id="flogText">
-							</div>
-							<!--
-							<div class="mb-3 kt-advanced">
-								<label for="mvolText">Mikrofon hangerő</label>
-								<input name="mvol" type="number" class="form-control" id="mvolText" placeholder="Mikrofon hangerő" min="0" max="255" required>
-								<div class="invalid-feedback">0-255 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							-->
-							<div class="mb-3">
-								<label for="typeSelect">Kaputelefon típusa</label>
-								<select name="type" class="form-select small" id="typeSelect" aria-placeholder="Válasszon..." required>
-									<option value="codefon">Codefon</option>
-									<option value="mkt">MKT</option>
-									<option value="laskomex">Laskomex</option>
-								</select>
-							</div>
-							<div class="mb-3 kt-advanced codeBlock">
-								<label for="codeText">Kapukód</label>
-								<input name="code" type="number" class="form-control" id="codeText" placeholder="Kapukód" min="1" max="127" required>
-								<div class="invalid-feedback">1-127 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<button type="submit" class="btn btn-primary">Mentés</button>
-						</form>
+			<div class="card">
+				<div class="card-body">
+					<div class="mb-3">
+						<label for="advancedSwitcher">Haladó beállítások</label>
+						<input id="advancedSwitcher" name="advancedSwitcher" type="checkbox">
 					</div>
-
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<div class="page hidden" id="admin">
+</main>
+<main role="main" class="container page hidden" id="admin">
+	<div>
 		<div class="card">
 			<div class="card-body">
 				<div class="mb-3">
-					<label for="advancedSwitcher">Haladó beállítások</label>
-					<input id="advancedSwitcher" name="advancedSwitcher" type="checkbox">
-				</div>
-				<div class="mb-3">
 					<button type="button" class="btn btn-primary" onclick="testCall()">Próba hívás</button>
 					<button type="button" class="btn btn-primary" onclick="restart()">Újraindítás</button>
-					<button type="button" class="btn btn-primary" onclick="factoryReset()">Gyári beállítások visszaállítása</button>
 					<div id="logInfoText"></div>
 				</div>
 			</div>
 		</div>
-		<div class="card">
-			<div class="card-body">
-				<div class="mb-3 kt-advanced" onclick="switchAdvanced(true)">
-					<label for="codeText">MAC cím: </label><label id="macAddressDiv"></label>
+
+		<div class="accordion-item kt-advanced">
+			<h2 class="accordion-header" id="headingFour">
+				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+					Kapu beállítások
+				</button>
+			</h2>
+			<div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour">
+				<div class="accordion-body">
+					<form action="/api/icom" class="needs-validation" novalidate>
+						<div class="mb-3">
+							<label for="ivolText">Csengetés hangerő</label>
+							<input name="ivol" type="number" class="form-control" id="ivolText" placeholder="Csengetés hangerő" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="cvolText">Beep hangerő</label>
+							<input name="cvol" type="number" class="form-control" id="cvolText" placeholder="Beep hangerő" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="hvolText">Fejhallgató hangerő</label>
+							<input name="hvol" type="number" class="form-control" id="hvolText" placeholder="Fejhallgató hangerő" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="vvolText">Vonali audió feszültség</label>
+							<input name="vvol" type="number" class="form-control" id="vvolText" placeholder="Vonali audió feszültség" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="lvolText">Vonali audió hangerő</label>
+							<input name="lvol" type="number" class="form-control" id="lvolText" placeholder="Vonali audió hangerő" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="hdpxText">HDPX</label>
+							<input name="hdpx" type="hidden" value="0">
+							<input name="hdpx" class="form-check-input" type="checkbox" value="1" id="hdpxText">
+						</div>
+						<div class="mb-3">
+							<label for="staText">STA</label>
+							<input name="sta" type="hidden" value="0">
+							<input name="sta" class="form-check-input" type="checkbox" value="1" id="staText">
+						</div>
+						<div class="mb-3">
+							<label for="voipText">VOIP</label>
+							<input name="voip" type="hidden" value="0">
+							<input name="voip" class="form-check-input" type="checkbox" value="1" id="voipText">
+						</div>
+						<div class="mb-3">
+							<label for="flogText">FLOG</label>
+							<input name="flog" type="hidden" value="0">
+							<input name="flog" class="form-check-input" type="checkbox" value="1" id="flogText">
+						</div>
+						<!--
+                        <div class="mb-3">
+                            <label for="mvolText">Mikrofon hangerő</label>
+                            <input name="mvol" type="number" class="form-control" id="mvolText" placeholder="Mikrofon hangerő" min="0" max="255" required>
+                            <div class="invalid-feedback">0-255 tartományban választott értéket kötelező megadni.</div>
+                        </div>
+                        -->
+						<div class="mb-3">
+							<label for="typeSelect">Kaputelefon típusa</label>
+							<select name="type" class="form-select small" id="typeSelect" required>
+								<option value="codefon">Codefon</option>
+								<option value="mkt">MKT</option>
+								<option value="laskomex">Laskomex</option>
+							</select>
+						</div>
+						<div class="mb-3 codeBlock">
+							<label for="codeText">Kapukód</label>
+							<input name="code" type="number" class="form-control" id="codeText" placeholder="Kapukód" min="1" max="127" required>
+							<div class="invalid-feedback">1-127 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="rvolText">Kapucsengő hangerő</label>
+							<input name="rvol" type="number" class="form-control" id="rvolText" placeholder="Ajtócsengő hangerő" min="0" max="255" required>
+							<div class="invalid-feedback">0-255 tartományban választott értéket kötelező megadni.</div>
+						</div>
+					</form>
 				</div>
-				<div class="mb-3">
-					<label for="codeText">Firmware verzió: </label><label id="fwVersionDiv"></label>
-				</div>
-				<div class="mb-3">
-					<a href="file/COPYING_baresip">License fájl</a>
-				</div>
+
 			</div>
 		</div>
 
-		<div class="kt-more-advanced card">
-			<div class="card-body">
-				<form action="/api/settings" class="needs-validation" novalidate>
-					<div class="mb-3">
-						<label for="testmodeText">Test mode</label>
-						<input name="testmode" type="number" class="form-control" id="testmodeText" placeholder="Test mode" readonly>
-					</div>
-					<div class="mb-3">
-						<label for="ctimText">Timeout</label>
-						<input name="ctim" type="number" class="form-control" id="ctimText" placeholder="Timeout" min="0" max="255" required>
-						<div class="invalid-feedback">Kötelező értéket megadni.</div>
-					</div>
-					<button type="submit" class="btn btn-primary">Mentés</button>
-				</form>
-			</div>
-		</div>
-
-		<div class="accordion kt-advanced" id="accordionAdmin">
+		<div class="accordion" id="accordionAdmin">
 			<div class="accordion-item">
 				<h2 class="accordion-header" id="headingFw">
 					<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFw" aria-expanded="false" aria-controls="collapseFw">
 						Firmware
 					</button>
 				</h2>
-				<div id="collapseFw" class="accordion-collapse collapse show"  aria-labelledby="headingFw" data-bs-parent="#accordionAdmin">
+				<div id="collapseFw" class="accordion-collapse collapse show"  aria-labelledby="headingFw">
 					<div class="accordion-body">
 						<form id="otaFileForm" class="needs-validation" novalidate>
+							<div class="mb-3">
+								<button type="button" class="btn btn-primary" onclick="factoryReset()">Gyári beállítások visszaállítása</button>
+							</div>
 							<div class="mb-3">
 								<button type="button" class="btn btn-primary" onclick="checkUpdate()">Automatikus firmware frissítés</button>
 							</div>
 							<div class="mb-3">
-								<input id="otaFile" name="otaFile" type="file" class="file" data-show-preview="false" required>
-								<div class="invalid-feedback">Kötelező fájlt kiválasztani.</div>
-								<button type="submit" class="btn btn-primary">Feltöltés</button>
+								<input id="otaFile" name="otaFile" type="file" class="file hidden" data-show-preview="false" required>
+								<button type="submit" class="btn btn-primary">Firmware fájl kiválasztása és feltöltése</button>
+							</div>
+							<div class="mb-3 kt-more-advanced">
+								<input id="indexFile" name="indexFile" type="file" class="file hidden" data-show-preview="false" required>
+								<button type="submit" class="btn btn-primary">Index fájl kiválasztása és feltöltése</button>
 							</div>
 						</form>
 					</div>
-				</div>
-			</div>
-
-			<div class="kt-more-advanced card">
-				<div class="card-body">
-					<form id="indexFileForm" class="needs-validation" novalidate>
-						<div class="mb-3">
-							<label for="indexFile">Index fájl</label>
-							<input id="indexFile" name="indexFile" type="file" class="file" data-show-preview="false" required>
-							<div class="invalid-feedback">Kötelező fájlt kiválasztani.</div>
-							<button type="submit" class="btn btn-primary">Feltöltés</button>
-						</div>
-					</form>
 				</div>
 			</div>
 
@@ -336,7 +277,7 @@
 					</button>
 				</h2>
 
-				<div id="collapseAdminOne" class="accordion-collapse collapse show"  aria-labelledby="headingAdminOne" data-bs-parent="#accordionAdmin">
+				<div id="collapseAdminOne" class="accordion-collapse collapse show"  aria-labelledby="headingAdminOne">
 					<div class="accordion-body">
 						<div class="mb-3">
 								<div class="row">
@@ -364,9 +305,60 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="kt-more-advanced card">
+				<div class="card-body">
+					<form action="/api/settings" class="needs-validation" novalidate>
+						<div class="mb-3">
+							<label for="testmodeText">Test mode</label>
+							<input name="testmode" type="number" class="form-control" id="testmodeText" placeholder="Test mode" readonly>
+						</div>
+						<div class="mb-3">
+							<label for="ctimText">Timeout</label>
+							<input name="ctim" type="number" class="form-control" id="ctimText" placeholder="Timeout" min="0" max="255" required>
+							<div class="invalid-feedback">Kötelező értéket megadni.</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Mentés</button>
+					</form>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<div class="mb-3">
+						<a href="file/COPYING_baresip">License fájl</a>
+					</div>
+					<div class="mb-3" onclick="switchAdvanced(true)">
+						<label for="codeText">MAC cím: </label><label id="macAddressDiv"></label>
+					</div>
+					<div class="mb-3">
+						<label for="codeText">Firmware verzió: </label><label id="fwVersionDiv"></label>
+					</div>
+				</div>
+			</div>
 		</div>
 
 	</div>
 </main>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; width: 200px;">
+	<div id="toastInfo" class="toast align-items-center hide" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="toast-header text-white bg-success">
+			<strong class="me-auto">Üzenet</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+		<div class="toast-body" id="infoText">
+		</div>
+	</div>
+</div>
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; width: 200px;">
+	<div id="toastError" class="toast align-items-center hide" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="toast-header text-white bg-danger">
+			<strong class="me-auto">Hiba</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+		</div>
+		<div class="toast-body" id="errorText">
+		</div>
+	</div>
+</div>
 </body>
 </html>

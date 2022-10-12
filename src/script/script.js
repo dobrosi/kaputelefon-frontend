@@ -42,7 +42,10 @@ function initGui() {
 }
 
 function initForms() {
+	loadFormsData();
+	switchAdvanced(false);
 	document.querySelectorAll('form').forEach(function(form) {
+	    form.autocomplete = 'off';
 		form.addEventListener('submit', function(event) {
 			if (!form.checkValidity()) {
 				event.preventDefault()
@@ -53,8 +56,6 @@ function initForms() {
 			form.classList.add('was-validated')
 		});
 	});
-	loadFormsData();
-	switchAdvanced(false);
 }
 
 function initLog() {
@@ -207,7 +208,11 @@ function jsonToForm(f, data) {
 	for(var prop in data){
 		let field = f.querySelector('*[name=' + prop + ']');
 		if (field != null) {
-			field.value = data[prop];
+            if (field.type == 'checkbox') {
+                field.checked = stringToBoolean(data[prop]);
+            } else {
+                field.value = data[prop];
+			}
 		}
 	}
 };
@@ -482,4 +487,21 @@ function checkUpdate() {
 			}
 			oReq.send();
 		});
+}
+
+function stringToBoolean(stringValue) {
+    switch(stringValue?.toLowerCase()?.trim()){
+        case "true":
+        case "yes":
+        case "1":
+          return true;
+        case "false":
+        case "no":
+        case "0":
+        case null:
+        case undefined:
+          return false;
+        default:
+          return JSON.parse(stringValue);
+    }
 }

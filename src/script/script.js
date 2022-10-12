@@ -17,7 +17,6 @@ var keyupTimeout = null
 var lastChangeEvent;
 var lastChangeForm;
 
-
 document.addEventListener("DOMContentLoaded", function(event) {
 	try {
 		let newConfiguration = JSON.parse(localStorage.getItem("configuration"));
@@ -52,11 +51,15 @@ function initForms() {
 	    form.autocomplete = 'off';
 	    if (form.className.includes('no-auto-submit')) {
             form.addEventListener('submit', function(event) {
+            	event.preventDefault();
                 formSubmit(event, form)
             });
         } else {
             form.querySelectorAll('input, select').forEach(function(input) {
-                input.addEventListener(input.type == 'password' || input.type == 'text' ? 'keyup' : 'change', function(event) {
+                input.addEventListener('keyup', function(event) {
+                    invokeKeyupTimeout(event, form);
+                });
+                input.addEventListener('change', function(event) {
                     invokeKeyupTimeout(event, form);
                 });
             });
@@ -83,9 +86,19 @@ function formSubmit(event, form) {
         event.preventDefault();
         event.stopPropagation();
     } else {
-        saveForm(event, form);
+        saveForm(form);
     }
     form.classList.add('was-validated');
+}
+
+function saveForm(form) {
+	let action = form.getAttribute('action');
+	if (action != null) {
+		action += '?' + new URLSearchParams(new FormData(form)).toString();
+		ajax('PUT', action);
+	} else {
+		saveFile(form);
+	}
 }
 
 function initLog() {
@@ -159,8 +172,7 @@ function ajax(protocol, action, successCallback, data, finishCallback) {
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (this.readyState == 4) {
-			console.log('ajax response, status: ' + this.status + ', text length: ' + this.responseText.length);
-			showConnected(this.status);
+			//showConnected(this.status);
 			if (this.status == 200) {
 				not_connected.style.display = 'none';
 				if (successCallback != null) {
@@ -168,6 +180,8 @@ function ajax(protocol, action, successCallback, data, finishCallback) {
 				} else {
 				    if(this.responseText != "") {
 					    showInfo(this.responseText);
+					} else {
+					    showInfo('<div class="floppy-disk"></div>');
 					}
 				}
 			} else {
@@ -240,7 +254,8 @@ function jsonToForm(f, data) {
 	for(var prop in data){
 		let field = f.querySelector('*[name=' + prop + ']');
 		if (field != null) {
-            if (field.type == 'checkbox') {
+		    if (field.type == 'hidden') {
+		    } else if (field.type == 'checkbox') {
                 field.checked = stringToBoolean(data[prop]);
             } else {
                 field.value = data[prop];
@@ -279,17 +294,6 @@ function showConnected(status) {
 
 function createUrl(action) {
 	return (configuration.url + action).replace(/([^:]\/)\/+/g, "$1");
-}
-
-function saveForm(event, form) {
-	event.preventDefault();
-	let action = form.getAttribute('action');
-	if (action != null) {
-		action += '?' + new URLSearchParams(new FormData(event.target)).toString();
-		ajax('PUT', action);
-	} else {
-		saveFile(form);
-	}
 }
 
 function saveFile(form) {

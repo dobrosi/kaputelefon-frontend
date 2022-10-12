@@ -13,7 +13,10 @@ var logTimeout;
 var connected;
 var not_connected;
 var callback = null;
-var keyupTimeout = null;
+var keyupTimeout = null
+var lastChangeEvent;
+var lastChangeForm;
+
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	try {
@@ -65,9 +68,13 @@ function invokeKeyupTimeout(event, form) {
     if (keyupTimeout != null) {
         clearTimeout(keyupTimeout);
     }
+    lastChangeEvent = event;
+    lastChangeForm = form;
     keyupTimeout = setTimeout(function() {
-        formSubmit(event, form);
+        formSubmit(lastChangeEvent, lastChangeForm);
         keyupTimeout = null;
+        lastChangeEvent = null;
+        lastChangeForm = null;
     }, 1000);
 }
 
@@ -76,7 +83,7 @@ function formSubmit(event, form) {
         event.preventDefault();
         event.stopPropagation();
     } else {
-        saveForm(event);
+        saveForm(event, form);
     }
     form.classList.add('was-validated');
 }
@@ -272,9 +279,8 @@ function createUrl(action) {
 	return (configuration.url + action).replace(/([^:]\/)\/+/g, "$1");
 }
 
-function saveForm(event) {
+function saveForm(event, form) {
 	event.preventDefault();
-	let form = event.target;
 	let action = form.getAttribute('action');
 	if (action != null) {
 		action += '?' + new URLSearchParams(new FormData(event.target)).toString();

@@ -513,7 +513,7 @@ function checkUpdate() {
 }
 
 function stringToBoolean(stringValue) {
-    switch(stringValue?.toLowerCase()?.trim()){
+    switch(stringValue.toLowerCase().trim()){
         case "true":
         case "yes":
         case "1":

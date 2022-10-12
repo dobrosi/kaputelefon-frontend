@@ -250,22 +250,24 @@
 				</h2>
 				<div id="collapseFw" class="accordion-collapse collapse show"  aria-labelledby="headingFw">
 					<div class="accordion-body">
-						<form id="otaFileForm" class="needs-validation" novalidate>
-							<div class="mb-3">
-								<button type="button" class="btn btn-primary" onclick="factoryReset()">Gyári beállítások visszaállítása</button>
-							</div>
-							<div class="mb-3">
-								<button type="button" class="btn btn-primary" onclick="checkUpdate()">Automatikus firmware frissítés</button>
-							</div>
-							<div class="mb-3">
+						<div class="mb-3">
+							<button type="button" class="btn btn-primary" onclick="factoryReset()">Gyári beállítások visszaállítása</button>
+						</div>
+						<div class="mb-3">
+							<button type="button" class="btn btn-primary" onclick="checkUpdate()">Automatikus firmware frissítés</button>
+						</div>
+						<div class="mb-3">
+							<form id="otaFileForm" class="needs-validation" novalidate>
 								<input id="otaFile" name="otaFile" type="file" class="file hidden" data-show-preview="false" required>
-								<button type="submit" class="btn btn-primary">Firmware fájl kiválasztása és feltöltése</button>
-							</div>
-							<div class="mb-3 kt-more-advanced">
+								<button type="button" class="btn btn-primary" onclick="document.getElementById('otaFile').click()">Firmware fájl kiválasztása és feltöltése</button>
+							</form>
+						</div>
+						<div class="mb-3 kt-more-advanced">
+							<form id="indexFileForm" class="needs-validation" novalidate>
 								<input id="indexFile" name="indexFile" type="file" class="file hidden" data-show-preview="false" required>
-								<button type="submit" class="btn btn-primary">Index fájl kiválasztása és feltöltése</button>
-							</div>
-						</form>
+								<button type="button" class="btn btn-primary" onclick="document.getElementById('indexFile').click()">Index fájl kiválasztása és feltöltése</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>

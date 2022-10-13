@@ -1,7 +1,6 @@
 #!/bin/sh
 
 build() {
-  export fev="1.1.$TRAVIS_BUILD_NUMBER"
   echo "var version = '$fev';" > src/script/version.js
 
   git pull

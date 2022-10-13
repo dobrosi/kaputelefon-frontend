@@ -53,7 +53,7 @@
 </header>
 
 <!-- Begin page content -->
-<main role="main" class="container page" id="settings">
+<main role="main" class="container page" id="settings" onclick="bsCollapse.hide()">
 	<div class="accordion" id="accordionSettings">
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="headingTwo">
@@ -253,13 +253,16 @@
 						<button type="button" class="btn btn-primary" onclick="factoryReset()">Gyári beállítások visszaállítása</button>
 					</div>
 					<div class="mb-3">
-						<button type="button" class="btn btn-primary" onclick="checkUpdate()">Firmware frissítés</button>
+						<button type="button" class="btn btn-primary" onclick="checkUpdate(otaReleaseUrls)">Firmware frissítés</button>
 					</div>
 					<div class="mb-3">
 						<form id="otaFileForm" class="needs-validation" novalidate>
 							<input id="otaFile" name="otaFile" type="file" class="file hidden" data-show-preview="false" required>
 							<button type="button" class="btn btn-primary" onclick="document.getElementById('otaFile').click()">Firmware fájl feltöltés</button>
 						</form>
+					</div>
+					<div class="mb-3 kt-more-advanced">
+						<button type="button" class="btn btn-primary" onclick="checkUpdate(indexReleaseUrls)">Index fájl frissítés</button>
 					</div>
 					<div class="mb-3 kt-more-advanced">
 						<form id="indexFileForm" class="needs-validation" novalidate>
@@ -319,10 +322,8 @@
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; width: 200px;">
 	<div id="toastInfo" class="toast align-items-center hide" role="alert" aria-live="assertive" aria-atomic="true">
 		<div class="toast-header text-white bg-success">
-			<strong class="me-auto">Üzenet</strong>
+			<strong id="infoText" class="me-auto"></strong>
 			<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-		</div>
-		<div class="toast-body" id="infoText">
 		</div>
 	</div>
 </div>

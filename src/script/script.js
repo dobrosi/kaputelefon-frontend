@@ -4,7 +4,8 @@ var configuration = {
 };
 
 var ansi_up = new AnsiUp;
-var releaseUrl = 'https://api.github.com/repos/dobrosi/jozsefutca/releases/latest';
+var otaReleaseUrls = ['https://api.github.com/repos/dobrosi/jozsefutca/releases/latest', '/api/ota'];
+var indexReleaseUrls = ['https://api.github.com/repos/dobrosi/kaputelefon-frontend/releases/latest', '/file/html']
 var corsProxyUrl = 'https://api.allorigins.win';
 var actionContacts = '/file/contacts';
 var actionAccounts = '/file/accounts';
@@ -14,6 +15,7 @@ var keyupTimeout = null
 var lastChangeEvent;
 var lastChangeForm;
 var logHtml = '';
+var bsCollapse, toastInfo, toastError;
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	try {
@@ -455,9 +457,9 @@ function receiveLogfile(timeout) {
 	});
 }
 
-function checkUpdate() {
-    showLoading('Firmware frissítés folyamatban...');
-	ajax('GET', corsProxyUrl + '/get?url=' + releaseUrl,
+function checkUpdate(releaseUrls) {
+    showLoading('Frissítés folyamatban...');
+	ajax('GET', corsProxyUrl + '/get?url=' + releaseUrls[0],
 		response => {
 			let release = JSON.parse(JSON.parse(response.responseText).contents).assets[0];
 			let url = release.browser_download_url;
@@ -467,7 +469,7 @@ function checkUpdate() {
 			oReq.onload = function(oEvent) {
 				showInfo('Letöltés: ' + release.name);
   				var blob = oReq.response;
-				ajax('PUT', '/api/ota', null, blob, () => setTimeout(() => closeLoading(), 1000));
+				ajax('PUT', releaseUrls[1], null, blob, () => setTimeout(() => closeLoading(), 1000));
 			}
 			oReq.send();
 		});

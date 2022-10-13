@@ -314,15 +314,15 @@ function saveFile(form) {
 	let d;
 	let action;
 	if (form.id == 'indexFileForm') {
-		showLoading('Folyamatban...');
-		action = '/file/html';
+		showLoading('Feltöltés folyamatban...');
+		action = indexReleaseUrls[1];
 		d = getFile(form);
-		callback = closeLoading;
+		callback = reload;
 	} else if (form.id == 'otaFileForm') {
-		showLoading('Folyamatban...');
-		action = '/api/ota';
+		showLoading('Feltöltés folyamatban...');
+		action = otaReleaseUrls[1];
 		d = getFile(form);
-		callback = closeLoading;
+		callback = reload;
 	} else if (form.id == 'phonebookForm') {
 		action = actionContacts;
 		d = getContacts(form);
@@ -469,7 +469,7 @@ function checkUpdate(releaseUrls) {
 			oReq.onload = function(oEvent) {
 				showInfo('Letöltés: ' + release.name);
   				var blob = oReq.response;
-				ajax('PUT', releaseUrls[1], null, blob, () => setTimeout(() => closeLoading(), 1000));
+				ajax('PUT', releaseUrls[1], null, blob, () => setTimeout(() => reload(), 1000));
 			}
 			oReq.send();
 		});
@@ -490,4 +490,8 @@ function stringToBoolean(stringValue) {
         default:
           return JSON.parse(stringValue);
     }
+}
+
+function reload() {
+    window.location.reload();
 }

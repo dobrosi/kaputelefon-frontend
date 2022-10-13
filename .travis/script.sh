@@ -11,7 +11,7 @@ build() {
 
   gulp inlinesource
 
-  gzip -f < target/index.html > target/index-$fev.html.gz
+  gzip -f < target/index.html > target/index.html
 
   git config --global user.email "dobrosi@gmail.com"
   git config --global user.name "Travis CI"

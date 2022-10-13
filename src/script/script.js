@@ -292,19 +292,13 @@ function jsonToForm(f, data) {
 };
 
 function showInfo(msg) {
-    doCallback();
 	document.querySelector('#infoText').innerHTML = msg;
 	toastInfo.show();
 }
 
 function showError(msg) {
-    doCallback();
 	document.querySelector('#errorText').innerHTML = msg;
 	toastError.show();
-}
-
-function doCallback() {
-    if (callback != null) callback();
 }
 
 function createUrl(action) {

@@ -10,12 +10,11 @@ var corsProxyUrl = 'https://api.allorigins.win';
 var actionContacts = '/file/contacts';
 var actionAccounts = '/file/accounts';
 var logTimeout;
-var callback = null;
 var keyupTimeout = null
 var lastChangeEvent;
 var lastChangeForm;
 var logHtml = '';
-var bsCollapse, toastInfo, toastError;
+var toastInfo, toastError;
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	try {
@@ -31,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 function initGui() {
 	initLogfile();
-    bsCollapse = new bootstrap.Collapse(document.getElementById('navbarSupportedContent'));
     toastInfo = new bootstrap.Toast(document.getElementById('toastInfo'));
 	toastError = new bootstrap.Toast(document.getElementById('toastError'));
 	initAdvancedMode();
@@ -55,7 +53,7 @@ function log(msg, server) {
 		if (line.length > 150) {
 			line = line.substr(0, 150) + '...';
 		}
-		line = ansi_up.ansi_to_html("\033[1;100;97m" + datestr + (server ? ' S ' : ' C ') + "\033[1;37;40m") + ansi_up.ansi_to_html(line);
+		line = ansi_up.ansi_to_html("\033[1;100;97m" + datestr + (server ? ' S ' : ' C ') + "\033[1;37;40m ") + ansi_up.ansi_to_html(line);
 		logHtml += line + "<br>";
 		let words = line.split('</span>');
         words.pop();
@@ -226,6 +224,9 @@ function ajax(protocol, action, successCallback, data, finishCallback) {
 
 function switchAdvanced(moreAdvancedMode) {
 	let v = document.getElementById('advancedSwitcher').checked;
+	if (v) {
+	    new bootstrap.Collapse(document.getElementById('navbarSupportedContent'));
+	}
 	configuration.advancedMode = v;
 	saveConfiguration();
     showHide('.kt-advanced', v);
@@ -313,6 +314,7 @@ function createUrl(action) {
 function saveFile(form) {
 	let d;
 	let action;
+	let callback = null;
 	if (form.id == 'indexFileForm') {
 		showLoading('Feltöltés folyamatban...');
 		action = indexReleaseUrls[1];
@@ -330,7 +332,7 @@ function saveFile(form) {
 		action = actionAccounts;
 		d = getAccounts(form);
 	}
-	ajax('PUT', action, null, d);
+	ajax('PUT', action, null, d, callback);
 }
 
 function getFile(form) {
@@ -393,9 +395,6 @@ function menu(l) {
     page = l.getAttribute('href');
     document.querySelectorAll('.page').forEach(function(item) {
         if(page == '#' + item.id) {
-        	if (document.querySelector("#navbar-toggler").offsetLeft >= 0) {
-            	bsCollapse.hide();
-            }
             item.classList.remove( 'hidden' );
         } else {
             item.classList.add( 'hidden' );

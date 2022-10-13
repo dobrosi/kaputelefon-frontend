@@ -8,5 +8,5 @@ script: .travis/script.sh
 deploy:
   provider: releases
   api_key: ${GH_TOKEN}
-  file: target/index.html.gz
+  file: target/index-$fev.html.gz
   skip_cleanup: true

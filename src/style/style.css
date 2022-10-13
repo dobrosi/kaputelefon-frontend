@@ -12,7 +12,7 @@ select.small {
 	width: 200px;
 }
 
-#versionDiv {
+.versionDiv {
 	font-size: 10px;
 	font-weight: bold;
 	line-height: 0;

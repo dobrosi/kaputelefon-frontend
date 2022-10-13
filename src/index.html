@@ -22,30 +22,35 @@
 <header>
 	<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#">Kaputelefon <div id="versionDiv"></div></a>
-			<div class=" kt-advanced">
-				<button id="navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-			</div>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item kt-advanced">
+			<a class="navbar-brand" href="#">Kaputelefon <div class="versionDiv"></div></a>
+		</div>
+	</nav>
+</header>
+<header class="kt-advanced">
+	<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">Kaputelefon <div class="versionDiv"></div></a>
+			<button id="navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="navbar-collapse collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav">
+					<li class="nav-item">
 						<a class="nav-link" href="#settings" onclick="menu(this)">Beállítások</a>
 					</li>
-					<li class="nav-item kt-advanced">
+					<li class="nav-item">
 						<a class="nav-link" href="#admin" onclick="menu(this)">Kapu</a>
 					</li>
-					<li class="nav-item kt-advanced">
+					<li class="nav-item">
 						<a class="nav-link" href="#service" onclick="menu(this)">Szervíz</a>
 					</li>
 					<li class="nav-item kt-more-advanced">
 						<a class="nav-link" href="#" onclick="openLog()">Log</a>
 					</li>
-					<li class="nav-item kt-advanced">
+					<li class="nav-item">
 						<a class="nav-link" href="#" onclick="testCall()">Próbahívás</a>
 					</li>
-					<li class="nav-item kt-advanced">
+					<li class="nav-item">
 						<a class="nav-link" href="#" onclick="restart()">Újraindítás</a>
 					</li>
 				</ul>

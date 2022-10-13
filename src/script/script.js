@@ -37,7 +37,7 @@ function initGui() {
 	initAdvancedMode();
 	initTypeSelect();
 	initForms();
-	document.getElementById("versionDiv").innerHTML = version;
+	document.querySelectorAll('.versionDiv').forEach(function(versionDiv){versionDiv.innerHTML = version});
     getFirmwareVersion();
     getMacAddress();
 }

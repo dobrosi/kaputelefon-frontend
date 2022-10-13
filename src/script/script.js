@@ -15,6 +15,7 @@ var lastChangeEvent;
 var lastChangeForm;
 var logHtml = '';
 var toastInfo, toastError;
+var icon;
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	try {
@@ -166,14 +167,17 @@ function getMacAddress() {
 }
 
 function restart() {
+    icon = 'rotate-right';
     ajax('GET', '/api/restart_to_conf');
 }
 
 function factoryReset() {
+    icon = 'rotate-right';
     ajax('GET', '/api/factory_reset');
 }
 
 function testCall() {
+    icon = 'phone';
     ajax('GET', '/api/testcall');
 }
 
@@ -205,7 +209,8 @@ function ajax(protocol, action, successCallback, data, finishCallback) {
 				    if(this.responseText != "") {
 					    showInfo(this.responseText);
 					} else {
-					    showInfo('<div class="floppy-disk"></div>');
+					    showInfo('<i class="bigger fa fa-' + (icon == null ? 'floppy-disk' : icon) + '"></i>');
+					    icon = null;
 					}
 				}
 			} else {

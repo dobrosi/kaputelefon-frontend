@@ -76,7 +76,7 @@ function log(msg, server) {
 function openLog() {
     open('','_blank', '').
         document.write(
-            '<html><body style=\'background-color: black;padding: 1px;color: lightgray;line-height: 17px;font-size: 16px;\'>' +
+            '<html><body style=\'background-color: black;padding: 1px;color: lightgray;line-height: 14px;font-size: 12px;\'>' +
             logHtml +
             '</body></html>');
 }

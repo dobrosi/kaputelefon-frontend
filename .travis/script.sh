@@ -9,6 +9,7 @@ build() {
   npm install gulp --save-dev
   npm i gulp-inline-source
 
+  gulp icons
   gulp inlinesource
 
   gzip -f < target/index.html > target/ui-${fev}.gz

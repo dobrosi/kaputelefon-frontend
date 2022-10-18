@@ -14,7 +14,7 @@ var keyupTimeout = null
 var lastChangeEvent;
 var lastChangeForm;
 var logHtml = '';
-var toastInfo, toastError;
+var bsCollapse, toastInfo, toastError;
 var icon;
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -31,7 +31,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 function initGui() {
 	initLogfile();
-    toastInfo = new bootstrap.Toast(document.getElementById('toastInfo'));
+	bsCollapse = new bootstrap.Collapse(document.getElementById('navbarSupportedContent'));
+	toastInfo = new bootstrap.Toast(document.getElementById('toastInfo'));
 	toastError = new bootstrap.Toast(document.getElementById('toastError'));
 	initAdvancedMode();
 	initTypeSelect();

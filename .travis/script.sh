@@ -8,6 +8,7 @@ build() {
   npm install -g gulp-cli
   npm install gulp --save-dev
   npm i gulp-inline-source
+  npm i gulp-inline-fonts
 
   gulp icons
   gulp inlinesource

@@ -3,6 +3,7 @@
 npm install -g gulp-cli
 npm install gulp --save-dev
 npm install gulp-inline-source
+npm install gulp-inline-fonts
 ```
 ### Build and deploy
 ```console

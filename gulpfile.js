@@ -5,7 +5,7 @@ var inlineFonts = require('gulp-inline-fonts');
 gulp.task('icons', function() {
     return gulp.src(['src/font/*'])
         .pipe(inlineFonts({ name: 'Font Awesome 6 Free' }))
-        .pipe(gulp.dest('src/font'));
+        .pipe(gulp.dest('target/font'));
 });
 
 gulp.task('inlinesource', function () {

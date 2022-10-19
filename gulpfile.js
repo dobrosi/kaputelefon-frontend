@@ -3,7 +3,7 @@ var inlinesource = require('gulp-inline-source');
 var inlineFonts = require('gulp-inline-fonts');
 
 gulp.task('icons', function() {
-    return gulp.src(['src/fonts/*'])
+    return gulp.src(['src/font/*'])
         .pipe(inlineFonts({ name: 'Font Awesome 6 Free' }))
         .pipe(gulp.dest('src/font'));
 });

@@ -471,7 +471,7 @@ function checkUpdate(releaseUrls) {
 		response => {
 			let release = JSON.parse(JSON.parse(response.responseText).contents).assets[0];
 			let url = release.browser_download_url;
-			var oReq = new XMLHttpRequest();
+			let oReq = new XMLHttpRequest();
 			oReq.open("GET", corsProxyUrl + '/raw?url=' + url, true);
 			oReq.responseType = "blob";
 			oReq.onload = function(oEvent) {

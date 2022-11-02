@@ -48,7 +48,7 @@ function log(msg) {
 
 function log(msg, server) {
 	let lines = msg.split('\n');
-	let datestr = moment().format('HH:mm:ss.SSS');
+	let datestr = new Date().toISOString();
 	for(i in lines) {
 		let line = lines[i];
 		if(line.length == 0) continue;
@@ -74,11 +74,14 @@ function log(msg, server) {
 }
 
 function openLog() {
-    open('','_blank', '').
-        document.write(
+    receiveLogfile(null, function() {
+        d = open('','_blank', '').document;
+        d.write(
             '<html><body style=\'background-color: black;padding: 1px;color: lightgray;line-height: 14px;font-size: 12px;\'>' +
             logHtml +
             '</body></html>');
+        d.close();
+    });
 }
 
 function initForms() {
@@ -168,12 +171,12 @@ function getMacAddress() {
 }
 
 function restart() {
-    icon = 'rotate-right';
+    icon = 'cw';
     ajax('GET', '/api/restart_to_conf');
 }
 
 function factoryReset() {
-    icon = 'rotate-right';
+    icon = 'cw';
     ajax('GET', '/api/factory_reset');
 }
 
@@ -209,8 +212,8 @@ function ajax(protocol, action, successCallback, data, finishCallback) {
 				} else {
 				    if(this.responseText != "") {
 					    showInfo(this.responseText);
-					} else {
-					    showInfo('<i class="bigger fa fa-' + (icon == null ? 'floppy-disk' : icon) + '"></i>');
+					} else if(icon != null) {
+					    showInfo('Sikeres', '<i class="icon-' + icon + '"></i>');
 					    icon = null;
 					}
 				}
@@ -297,8 +300,9 @@ function jsonToForm(f, data) {
 	}
 };
 
-function showInfo(msg) {
+function showInfo(msg, title = "") {
 	document.querySelector('#infoText').innerHTML = msg;
+	document.querySelector('#infoTitle').innerHTML = title;
 	toastInfo.show();
 }
 
@@ -449,10 +453,15 @@ function saveSelection(containerEl) {
     };
 }
 
-function receiveLogfile(timeout) {
+function receiveLogfile(timeout, callback) {
 	ajax('GET', '/api/logfile', (response) => {
 		log(response.responseText, true);
-		logTimeout = setTimeout(() => receiveLogfile(timeout), timeout * 1000 + 100);
+		if (timeout != null) {
+		    logTimeout = setTimeout(() => receiveLogfile(timeout), timeout * 1000 + 100);
+		}
+		if (callback != null) {
+		    callback(response);
+		}
 	});
 }
 

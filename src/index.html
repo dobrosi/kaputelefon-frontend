@@ -7,15 +7,13 @@
 	<title>Kaputelefon</title>
 
 	<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3C!--! Font Awesome Pro 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --%3E%3Cpath d='M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z'/%3E%3C/svg%3E" type="image/svg+xml" />
-	<link inline href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link inline rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/fontawesome.css" />
-	<link inline href="../target/font/Font Awesome 6 Free.css" rel="stylesheet">
+	<link inline href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link inline href="fontello/css/fontello-embedded.css" rel="stylesheet"/>
 	<link inline href="style/style.css" rel="stylesheet">
 
-	<script inline src="https://cdn.jsdelivr.net/npm/bootstrap"></script>
-	<script inline src="https://cdn.jsdelivr.net/npm/ansi_up"></script>
-	<script inline src="https://cdn.jsdelivr.net/npm/moment"></script>
-	<script inline src="https://cdn.jsdelivr.net/npm/sweetalert2"></script>
+	<script inline src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+	<script inline src="https://cdn.jsdelivr.net/npm/ansi_up@5.1.0/ansi_up.min.js"></script>
+	<script inline src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.5/dist/sweetalert2.all.min.js"></script>
 	<script inline src="script/version.js"></script>
 	<script inline src="script/script.js"></script>
 </head>
@@ -37,22 +35,22 @@
 				<div class="navbar-collapse collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav">
 						<li class="nav-item">
-							<b><a class="nav-link" href="#settings" onclick="menu(this)"><i class="fa fa-sliders"></i> Beállítások</a></b>
+							<b><a class="nav-link" href="#settings" onclick="menu(this)"><i class="icon-sliders"></i> Beállítások</a></b>
 						</li>
 						<li class="nav-item">
-							<b><a class="nav-link" href="#admin" onclick="menu(this)"><div class="fa fa-bell"></div> Kapu</a></b>
+							<b><a class="nav-link" href="#admin" onclick="menu(this)"><i class="icon-bell"></i> Kapu</a></b>
 						</li>
 						<li class="nav-item">
-							<b><a class="nav-link" href="#service" onclick="menu(this)"><i class="fa fa-wrench"></i> Szervíz</a></b>
+							<b><a class="nav-link" href="#service" onclick="menu(this)"><i class="icon-wrench"></i> Szervíz</a></b>
 						</li>
 						<li class="nav-item kt-more-advanced">
-							<b><a class="nav-link" href="#" onclick="openLog()"><i class="fa fa-rotate-right"></i> Log</a></b>
+							<b><a class="nav-link" href="#" onclick="openLog()"><i class="icon-doc-text"></i> Log</a></b>
 						</li>
 						<li class="nav-item">
-							<b><a class="nav-link" href="#" onclick="testCall()"><i class="fa fa-phone"></i> Próbahívás</a></b>
+							<b><a class="nav-link" href="#" onclick="testCall()"><i class="icon-phone"></i> Próbahívás</a></b>
 						</li>
 						<li class="nav-item">
-							<b><a class="nav-link" href="#" onclick="restart()"><i class="fa fa-rotate-right"></i> Újraindítás</a></b>
+							<b><a class="nav-link" href="#" onclick="restart()"><i class="icon-cw"></i> Újraindítás</a></b>
 						</li>
 					</ul>
 				</div>
@@ -147,7 +145,7 @@
 								<input name="password" type="password" class="form-control" id="passwordText" placeholder="Jelszó" required>
 								<div class="invalid-feedback">Kötelező értéket megadni.</div>
 							</div>
-							<button type="submit" class="btn btn-primary">Kapcsolódás</button>
+							<button type="submit" class="btn btn-primary"><i class="icon-wifi"></i> Kapcsolódás</button>
 						</form>
 					</div>
 				</div>
@@ -331,8 +329,10 @@
 	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; width: 200px;">
 		<div id="toastInfo" class="toast align-items-center hide" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="toast-header text-white bg-success">
-				<strong id="infoText" class="me-auto"></strong>
+				<strong id="infoTitle" class="me-auto"></strong>
 				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body" id="infoText">
 			</div>
 		</div>
 	</div>
@@ -346,6 +346,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

@@ -17,6 +17,26 @@ var logHtml = '';
 var bsCollapse, toastInfo, toastError;
 var icon;
 
+var defaultConsole = window.console;
+var console = {};
+console.log = function(m){
+    log(m);
+};
+console.warn = function(m){
+    log(m, function(format, pairs) {defaultConsole.warn(format, ...pairs)});
+};
+console.error = function(m){
+    log(m, function(format, pairs) {defaultConsole.error(format, ...pairs)});
+};
+console.trace = function(m){
+    log(m, function(format, pairs) {defaultConsole.trace(format, ...pairs)});
+};
+window.console = console;
+window.onerror=function(msg, url, linenumber){
+    console.error('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber)
+    return true
+}
+
 document.addEventListener("DOMContentLoaded", function(event) {
 	try {
 		let newConfiguration = JSON.parse(localStorage.getItem("configuration"));
@@ -42,11 +62,7 @@ function initGui() {
     getMacAddress();
 }
 
-function log(msg) {
-	log(msg, false);
-}
-
-function log(msg, server) {
+function log(msg, callback = function(format, pairs) {defaultConsole.log(format, ...pairs)}, server = false) {
 	let lines = msg.split('\n');
 	let datestr = new Date().toISOString();
 	for(i in lines) {
@@ -69,18 +85,20 @@ function log(msg, server) {
 		    pairs.push(pair[0]);
 		    pairs.push(pair[1]);
 		}
-		console.log(format, ...pairs);
+		callback(format, pairs);
 	}
 }
 
 function openLog() {
     receiveLogfile(null, function() {
-        d = open('','_blank', '').document;
-        d.write(
-            '<html><body style=\'background-color: black;padding: 1px;color: lightgray;line-height: 14px;font-size: 12px;\'>' +
-            logHtml +
-            '</body></html>');
-        d.close();
+        let w = open('','_blank', '');
+        if(w) {
+            w.document.write(
+                '<html><body style=\'background-color: black;padding: 1px;color: lightgray;line-height: 14px;font-size: 12px;\'>' +
+                logHtml +
+                '</body></html>');
+            w.document.close();
+        }
     });
 }
 
@@ -222,7 +240,7 @@ function ajax(protocol, action, successCallback, data, finishCallback) {
 		    }
 		}
 		if (finishCallback != null) {
-                finishCallback(this);
+            finishCallback(this);
         }
 	};
 	action = action.startsWith('http') ? action : createUrl(action);
@@ -459,9 +477,10 @@ function receiveLogfile(timeout, callback) {
 		if (timeout != null) {
 		    logTimeout = setTimeout(() => receiveLogfile(timeout), timeout * 1000 + 100);
 		}
-		if (callback != null) {
-		    callback(response);
-		}
+	}, null, () => {
+        if (callback != null) {
+            callback();
+        }
 	});
 }
 

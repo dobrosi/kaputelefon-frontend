@@ -23,13 +23,13 @@ console.log = function(m){
     log(m);
 };
 console.warn = function(m){
-    log(m, function(format, pairs) {defaultConsole.warn(format, ...pairs)});
+    log(m, false, function(format, pairs) {defaultConsole.warn(format, ...pairs)});
 };
 console.error = function(m){
-    log(m, function(format, pairs) {defaultConsole.error(format, ...pairs)});
+    log(m, false, function(format, pairs) {defaultConsole.error(format, ...pairs)});
 };
 console.trace = function(m){
-    log(m, function(format, pairs) {defaultConsole.trace(format, ...pairs)});
+    log(m, false, function(format, pairs) {defaultConsole.trace(format, ...pairs)});
 };
 window.console = console;
 window.onerror=function(msg, url, linenumber){
@@ -62,7 +62,7 @@ function initGui() {
     getMacAddress();
 }
 
-function log(msg, callback = function(format, pairs) {defaultConsole.log(format, ...pairs)}, server = false) {
+function log(msg, server = false, callback = function(format, pairs) {defaultConsole.log(format, ...pairs)}) {
 	let lines = msg.split('\n');
 	let datestr = new Date().toISOString();
 	for(i in lines) {
@@ -477,7 +477,7 @@ function receiveLogfile(timeout, callback) {
 		if (timeout != null) {
 		    logTimeout = setTimeout(() => receiveLogfile(timeout), timeout * 1000 + 100);
 		}
-	}, null, () => {
+	}, null, function() {
         if (callback != null) {
             callback();
         }

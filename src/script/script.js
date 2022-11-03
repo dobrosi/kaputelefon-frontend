@@ -190,12 +190,12 @@ function getMacAddress() {
 
 function restart() {
     icon = 'cw';
-    ajax('GET', '/api/restart_to_conf');
+    ajax('GET', '/api/restart_to_conf', () => reload());
 }
 
 function factoryReset() {
     icon = 'cw';
-    ajax('GET', '/api/factory_reset');
+    ajax('GET', '/api/factory_reset', () => reload());
 }
 
 function testCall() {

@@ -4,9 +4,9 @@ var configuration = {
 };
 
 var ansi_up = new AnsiUp;
-var otaReleaseUrls = ['https://api.github.com/repos/dobrosi/jozsefutca/releases/latest', '/api/ota'];
-var indexReleaseUrls = ['https://api.github.com/repos/dobrosi/kaputelefon-frontend/releases/latest', '/file/html']
-var corsProxyUrl = 'https://api.allorigins.win';
+var otaReleaseUrls = ['http://kaputelefon-backend.cserke.com', '/api/ota'];
+var indexReleaseUrls = ['http://kaputelefon-frontend.cserke.com', '/file/html']
+var corsProxyUrl = 'http://allorigins.cserke.com';
 var actionContacts = '/file/contacts';
 var actionAccounts = '/file/accounts';
 var logTimeout;

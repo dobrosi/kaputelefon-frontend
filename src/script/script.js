@@ -220,9 +220,13 @@ function closeLoading() {
     Swal.close();
 }
 
-function ajax(protocol, action, successCallback, data, finishCallback) {
+function ajax(protocol, url, successCallback, data, finishCallback) {
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
+		if (this.status == 302) {
+			ajax(protocol, this.headers.get('Location'), successCallback, data, finishCallback);
+			return;
+		}
 		if (this.readyState == 4) {
 			if (this.status == 200) {
 				if (successCallback != null) {
@@ -243,8 +247,8 @@ function ajax(protocol, action, successCallback, data, finishCallback) {
             finishCallback(this);
         }
 	};
-	action = action.startsWith('http') ? action : createUrl(action);
-	xhr.open(protocol, action, true);
+	url = url.startsWith('http') ? url : createUrl(url);
+	xhr.open(protocol, url, true);
 	xhr.overrideMimeType('text/json');
 	xhr.send(data);
 }

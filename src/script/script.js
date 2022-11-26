@@ -37,7 +37,7 @@ window.onerror=function(msg, url, linenumber){
     return true
 }
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function() {
 	try {
 		configuration = JSON.parse(localStorage.getItem("configuration"));
 	} catch (e) {
@@ -339,7 +339,7 @@ function saveFile(form) {
 		action = actionAccounts;
 		d = getAccounts(form);
 	}
-	ajax('PUT', action, null, d, callback);
+	ajax('PUT', action, callback, d);
 }
 
 function getFile(form) {
@@ -356,7 +356,7 @@ function getLine(lines, arg) {
 }
 
 function getAccounts(form, content) {
-	let d = ''
+	let d
 	d = '<sip:' + form.querySelector('#accountSipTextField1').value + '@' + form.querySelector('#accountSipTextField2').value;
 	d += ';transport=udp>;'
 	d += 'auth_pass=' + form.querySelector('#accountPasswordTextField').value + ";";
@@ -380,7 +380,7 @@ function getUserAndServer(str) {
 
 function getContacts(form, content) {
 	let d = '';
-	let contacts = new Array();
+	let contacts = [];
 	if (content != null && content !== '') {
 		let lines = content.split('\n');
 		[].forEach.call(lines, function(line) {
@@ -427,7 +427,7 @@ function checkUpdate(releaseUrls) {
 			let oReq = new XMLHttpRequest();
 			oReq.open("GET", corsProxyUrl + '/raw?url=' + url, true);
 			oReq.responseType = "blob";
-			oReq.onload = function(oEvent) {
+			oReq.onload = function() {
 				showInfo('Letöltés: ' + release.name);
   				var blob = oReq.response;
 				ajax('PUT', releaseUrls[1], null, blob, () => setTimeout(() => reload(), 1000));
@@ -517,5 +517,5 @@ function stringToBoolean(stringValue) {
 
 function reload() {
 	showLoading('Újraindítás...');
-	setTimeout(() => window.location.reload(), 3000);
+	setTimeout(() => window.location.reload(), 2000);
 }

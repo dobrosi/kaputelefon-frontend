@@ -1,5 +1,4 @@
 var configuration = {
-	url: document.location.href,
 	advancedMode: false
 };
 
@@ -16,6 +15,7 @@ var lastChangeForm;
 var logHtml = '';
 var bsCollapse, toastInfo, toastError;
 var icon;
+var loadingForm = 0;
 
 var defaultConsole = window.console;
 var console = {};
@@ -39,10 +39,7 @@ window.onerror=function(msg, url, linenumber){
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	try {
-		let newConfiguration = JSON.parse(localStorage.getItem("configuration"));
-		if (newConfiguration != null && newConfiguration.url !== "") {
-			configuration = newConfiguration;
-		}
+		configuration = JSON.parse(localStorage.getItem("configuration"));
 	} catch (e) {
 		console.log(e);
 	}
@@ -50,56 +47,36 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function initGui() {
+	showLoading('Betöltés...');
+	initChangeEvents();
 	initLogfile();
 	bsCollapse = new bootstrap.Collapse(document.getElementById('navbarSupportedContent'));
 	toastInfo = new bootstrap.Toast(document.getElementById('toastInfo'));
 	toastError = new bootstrap.Toast(document.getElementById('toastError'));
 	initAdvancedMode();
-	initTypeSelect();
 	initForms();
 	document.querySelectorAll('.versionDiv').forEach(function(versionDiv){versionDiv.innerHTML = version});
     getFirmwareVersion();
     getMacAddress();
 }
 
-function log(msg, server = false, callback = function(format, pairs) {defaultConsole.log(format, ...pairs)}) {
-	let lines = msg.split('\n');
-	let datestr = new Date().toISOString();
-	for(i in lines) {
-		let line = lines[i];
-		if(line.length == 0) continue;
-		if (line.length > 150) {
-			line = line.substr(0, 150) + '...';
-		}
-		line = ansi_up.ansi_to_html("\033[1;100;97m" + datestr + (server ? ' S ' : ' C ') + "\033[1;37;40m ") + ansi_up.ansi_to_html(line);
-		logHtml += line + "<br>";
-		let words = line.split('</span>');
-        words.pop();
-		let format = '';
-		line = '';
-		let pairs = new Array();
-		for(j in words) {
-		    let word = words[j];
-		    let pair = word.substring(13).split("\">");
-		    format += '%c %s '
-		    pairs.push(pair[0]);
-		    pairs.push(pair[1]);
-		}
-		callback(format, pairs);
+function loadFormData(form) {
+	loadingForm++;
+	let action = form.getAttribute('action');
+	if (action != null) {
+		ajax('GET', action, function(response) {
+			if(response.responseText !== '') {
+				loadingForm--;
+				jsonToForm(form, JSON.parse(response.responseText.replace(',}', '}')));
+				if (--loadingForm === 0) {
+					showHideBlocks();
+					showHide('#menuItems', true);
+					showHide('#settings', true);
+					hideLoading();
+				}
+			}
+		});
 	}
-}
-
-function openLog() {
-    receiveLogfile(null, function() {
-        let w = open('','_blank', '');
-        if(w) {
-            w.document.write(
-                '<html><body style=\'background-color: black;padding: 1px;color: lightgray;line-height: 14px;font-size: 12px;\'>' +
-                logHtml +
-                '</body></html>');
-            w.document.close();
-        }
-    });
 }
 
 function initForms() {
@@ -159,10 +136,22 @@ function saveForm(form) {
 	}
 }
 
-function initTypeSelect() {
+function initChangeEvents() {
     document.getElementById('typeSelect').addEventListener('change', function() {
-        showHide('.codeBlock', this.value!='mkt');
+        showHideBlocks();
     });
+	document.getElementById('wifiSwitcher').addEventListener('change', function() {
+		showHideBlocks();
+	});
+	document.getElementById('voipSwitcher').addEventListener('change', function() {
+		showHideBlocks();
+	});
+}
+
+function showHideBlocks() {
+	showHide('.codeBlock', document.getElementById('typeSelect').value !== 'mkt');
+	showHide('.wifi', document.getElementById('wifiSwitcher').checked);
+	showHide('.voip', document.getElementById('voipSwitcher').checked);
 }
 
 function initAdvancedMode() {
@@ -211,28 +200,28 @@ function showLoading(titleText) {
         allowOutsideClick: false,
         timerProgressBar: true,
         didOpen: () => {
-	        Swal.showLoading()
+	        Swal.showLoading();
 	    }
     })
 }
 
-function closeLoading() {
-    Swal.close();
+function hideLoading() {
+	Swal.close();
 }
 
-function ajax(protocol, url, successCallback, data, finishCallback) {
+function ajax(protocol, url, successCallback, data) {
 	let xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
-		if (this.status == 302) {
-			ajax(protocol, this.headers.get('Location'), successCallback, data, finishCallback);
+		if (this.status === 302) {
+			ajax(protocol, this.headers.get('Location'), successCallback, data);
 			return;
 		}
-		if (this.readyState == 4) {
-			if (this.status == 200) {
+		if (this.readyState === 4) {
+			if (this.status === 200) {
 				if (successCallback != null) {
 					successCallback(this);
 				} else {
-				    if(this.responseText != "") {
+				    if(this.responseText !== "") {
 					    showInfo(this.responseText);
 					} else if(icon != null) {
 					    showInfo('Sikeres', '<i class="icon-' + icon + '"></i>');
@@ -243,11 +232,7 @@ function ajax(protocol, url, successCallback, data, finishCallback) {
 				showError(this.status + ": " + this.statusText);
 		    }
 		}
-		if (finishCallback != null) {
-            finishCallback(this);
-        }
 	};
-	url = url.startsWith('http') ? url : createUrl(url);
 	xhr.open(protocol, url, true);
 	xhr.overrideMimeType('text/json');
 	xhr.send(data);
@@ -264,12 +249,23 @@ function switchAdvanced(moreAdvancedMode) {
     showHide('.kt-more-advanced', moreAdvancedMode);
 }
 
-function showHide(clazz, show) {
-	let list = document.querySelectorAll(clazz);
-	var i;
-	for (i = 0; i < list.length; i++) {
-		list[i].style.display = show ? 'block' : 'none';
+function showHide(selector, show) {
+	let list = document.querySelectorAll(selector);
+	for (let i = 0; i < list.length; i++) {
+		if (show) {
+			showItem(list[i]);
+		} else {
+			hideItem(list[i]);
+		}
 	}
+}
+
+function showItem(item) {
+	item.classList.remove( 'hidden' );
+}
+
+function hideItem(item) {
+	item.classList.add( 'hidden' );
 }
 
 function printInfo(e, div) {
@@ -293,17 +289,6 @@ function loadFormsData() {
 		r.responseText));
 }
 
-function loadFormData(form) {
-	let action = form.getAttribute('action');
-	if (action != null) {
-		ajax('GET', action, function(response) {
-			if(response.responseText != '') {
-				jsonToForm(form, JSON.parse(response.responseText.replace(',}', '}')));
-			}
-		});
-	}
-}
-
 function saveConfiguration() {
 	localStorage.setItem("configuration", JSON.stringify(configuration));
 }
@@ -312,15 +297,15 @@ function jsonToForm(f, data) {
 	for(var prop in data){
 		let field = f.querySelector('*[name=' + prop + ']');
 		if (field != null) {
-		    if (field.type == 'hidden') {
-		    } else if (field.type == 'checkbox') {
+		    if (field.type === 'hidden') {
+		    } else if (field.type === 'checkbox') {
                 field.checked = stringToBoolean(data[prop]);
             } else {
                 field.value = data[prop];
 			}
 		}
 	}
-};
+}
 
 function showInfo(msg, title = "") {
 	document.querySelector('#infoText').innerHTML = msg;
@@ -333,28 +318,24 @@ function showError(msg) {
 	toastError.show();
 }
 
-function createUrl(action) {
-	return (configuration.url + action).replace(/([^:]\/)\/+/g, "$1");
-}
-
 function saveFile(form) {
 	let d;
 	let action;
 	let callback = null;
-	if (form.id == 'indexFileForm') {
+	if (form.id === 'indexFileForm') {
 		showLoading('Feltöltés folyamatban...');
 		action = indexReleaseUrls[1];
 		d = getFile(form);
 		callback = reload;
-	} else if (form.id == 'otaFileForm') {
+	} else if (form.id === 'otaFileForm') {
 		showLoading('Feltöltés folyamatban...');
 		action = otaReleaseUrls[1];
 		d = getFile(form);
 		callback = reload;
-	} else if (form.id == 'phonebookForm') {
+	} else if (form.id === 'phonebookForm') {
 		action = actionContacts;
 		d = getContacts(form);
-	} else if (form.id == 'accountForm') {
+	} else if (form.id === 'accountForm') {
 		action = actionAccounts;
 		d = getAccounts(form);
 	}
@@ -366,7 +347,7 @@ function getFile(form) {
 }
 
 function getLine(lines, arg) {
-	for (var i = 0; i < lines.length; i++) {
+	for (let i = 0; i < lines.length; i++) {
 		if (lines[i].startsWith(arg + '=')) {
 			return lines[i].split('=')[1];
 		}
@@ -376,27 +357,34 @@ function getLine(lines, arg) {
 
 function getAccounts(form, content) {
 	let d = ''
-	let account;
-	d = '<' + form.querySelector('#accountSipTextField').value;
+	d = '<sip:' + form.querySelector('#accountSipTextField1').value + '@' + form.querySelector('#accountSipTextField2').value;
 	d += ';transport=udp>;'
 	d += 'auth_pass=' + form.querySelector('#accountPasswordTextField').value + ";";
 	d += 'outbound="' + form.querySelector('#accountOutboundTextField').value + '"';
-	if (content != null && content != '') {
+	if (content !== null && content !== '') {
 		let lines = content.split(';');
-		form.querySelector('#accountSipTextField').value = lines[0].split('<')[1];
+		let words = getUserAndServer(lines[0].split('<')[1]);
+		form.querySelector('#accountSipTextField1').value = words[0];
+		form.querySelector('#accountSipTextField2').value = words[1];
 		form.querySelector('#accountPasswordTextField').value = getLine(lines, 'auth_pass');
 		form.querySelector('#accountOutboundTextField').value = getLine(lines, 'outbound').split("\"")[1];
 	}
 	return d;
 }
 
+function getUserAndServer(str) {
+	let words = str.split('@');
+	words[0] = words[0].substring(4);
+	return words;
+}
+
 function getContacts(form, content) {
 	let d = '';
 	let contacts = new Array();
-	if (content != null && content != '') {
+	if (content != null && content !== '') {
 		let lines = content.split('\n');
 		[].forEach.call(lines, function(line) {
-			if(line != "") {
+			if(line !== "") {
 				let words = line.split(/\"\s*</);
 				words[0] = words[0].split(/\"/)[1];
 				words[1] = words[1].split(/>/)[0];
@@ -405,87 +393,29 @@ function getContacts(form, content) {
 		});
 	}
 	let divs = form.querySelectorAll('.kt-contact');
-	for(var i = 0; i < divs.length ; i++) {
+	for(let i = 0; i < divs.length ; i++) {
 		let div = divs[i];
 		let inputs = div.querySelectorAll('input');
-		d += '"' + inputs[0].value + '" <' + inputs[1].value + '>\n';
+		d += '"' + inputs[0].value + '" <sip:' + inputs[1].value + '@' + inputs[2].value + '>\n';
 		if (contacts.length > 0) {
-			inputs[0].value = contacts[i][0];
-			inputs[1].value = contacts[i][1];
+//			inputs[0].value = contacts[i][0];
+			let words = getUserAndServer(contacts[i][1])
+			inputs[1].value = words[0];
+			inputs[2].value = words[1];
 		}
-	};
+	}
 	return d;
 }
 
 function menu(l) {
-    page = l.getAttribute('href');
+	let page = l.getAttribute('href');
     document.querySelectorAll('.page').forEach(function(item) {
-        if(page == '#' + item.id) {
-            item.classList.remove( 'hidden' );
+        if(page === '#' + item.id) {
+			showItem(item);
         } else {
-            item.classList.add( 'hidden' );
+            hideItem(item);
         }
     });
-}
-
-function setLogTimeout(timeout) {
-	if (logTimeout != null) {
-		clearInterval(logTimeout);
-	}
-	if (timeout >= 0) {
-		receiveLogfile(timeout);
-	}
-}
-
-function saveSelection(containerEl) {
-    var charIndex = 0, start = 0, end = 0, foundStart = false, stop = {};
-    var sel = rangy.getSelection(), range;
-
-    function traverseTextNodes(node, range) {
-        if (node.nodeType == 3) {
-            if (!foundStart && node == range.startContainer) {
-                start = charIndex + range.startOffset;
-                foundStart = true;
-            }
-            if (foundStart && node == range.endContainer) {
-                end = charIndex + range.endOffset;
-                throw stop;
-            }
-            charIndex += node.length;
-        } else {
-            for (var i = 0, len = node.childNodes.length; i < len; ++i) {
-                traverseTextNodes(node.childNodes[i], range);
-            }
-        }
-    }
-
-    if (sel.rangeCount) {
-        try {
-            traverseTextNodes(containerEl, sel.getRangeAt(0));
-        } catch (ex) {
-            if (ex != stop) {
-                throw ex;
-            }
-        }
-    }
-
-    return {
-        start: start,
-        end: end
-    };
-}
-
-function receiveLogfile(timeout, callback) {
-	ajax('GET', '/api/logfile', (response) => {
-		log(response.responseText, true);
-		if (timeout != null) {
-		    logTimeout = setTimeout(() => receiveLogfile(timeout), timeout * 1000 + 100);
-		}
-	}, null, function() {
-        if (callback != null) {
-            callback();
-        }
-	});
 }
 
 function checkUpdate(releaseUrls) {
@@ -506,6 +436,68 @@ function checkUpdate(releaseUrls) {
 		});
 }
 
+function log(msg, server = false, callback = function(format, pairs) {defaultConsole.log(format, ...pairs)}) {
+	let lines = msg.split('\n');
+	let datestr = new Date().toISOString();
+	for(i in lines) {
+		let line = lines[i];
+		if(line.length === 0) continue;
+		if (line.length > 150) {
+			line = line.substr(0, 150) + '...';
+		}
+		line = ansi_up.ansi_to_html("\033[1;100;97m" + datestr + (server ? ' S ' : ' C ') + "\033[1;37;40m ") + ansi_up.ansi_to_html(line);
+		logHtml += line + "<br>";
+		let words = line.split('</span>');
+		words.pop();
+		let format = '';
+		line = '';
+		let pairs = [];
+		for(j in words) {
+			let word = words[j];
+			let pair = word.substring(13).split("\">");
+			format += '%c %s '
+			pairs.push(pair[0]);
+			pairs.push(pair[1]);
+		}
+		callback(format, pairs);
+	}
+}
+
+function openLogWindow() {
+	receiveLogfile(null, function() {
+		let w = open('','kaputelefon_log', '');
+		if(w) {
+			w.document.write(
+				'<html><body style=\'background-color: black;padding: 1px;color: lightgray;line-height: 14px;font-size: 12px;\'>' +
+				logHtml +
+				'</body></html>');
+			w.document.close();
+			w.document.title = 'Log';
+		}
+	});
+}
+
+function setLogTimeout(timeout) {
+	if (logTimeout != null) {
+		clearInterval(logTimeout);
+	}
+	if (timeout >= 0) {
+		receiveLogfile(timeout);
+	}
+}
+
+function receiveLogfile(timeout, callback) {
+	ajax('GET', '/api/logfile', (response) => {
+		log(response.responseText, true);
+		if (timeout != null) {
+			logTimeout = setTimeout(() => receiveLogfile(timeout), timeout * 1000 + 100);
+		}
+		if (callback != null) {
+			callback();
+		}
+	}, null);
+}
+
 function stringToBoolean(stringValue) {
     switch(stringValue.toLowerCase().trim()){
         case "true":
@@ -524,5 +516,6 @@ function stringToBoolean(stringValue) {
 }
 
 function reload() {
-    window.location.reload();
+	showLoading('Újraindítás...');
+	setTimeout(() => window.location.reload(), 3000);
 }

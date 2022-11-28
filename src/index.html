@@ -65,7 +65,7 @@
 				<div class="accordion-item">
 					<div id="collapseBasic" class="accordion-collapse collapse show" aria-labelledby="headingBasic">
 						<div class="accordion-body">
-							<form action="/api/icom" class="needs-validation" novalidate>
+							<form action="/api/settings" class="needs-validation" novalidate>
 								<div class="mb-3">
 									<label for="typeSelect">Kaputelefon típusa</label>
 									<select name="type" class="form-select small" id="typeSelect" required>
@@ -84,32 +84,18 @@
 									<input name="ivol" type="number" class="form-control" id="ivolText" placeholder="Csengetés hangerő" min="0" max="100" required>
 									<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
 								</div>
-								<div class="mb-3">
-									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" role="switch" name="sta" id="wifiSwitcher" value="1">
-										<input name="sta" type="hidden" value="0">
-										<label class="form-check-label" for="wifiSwitcher">Wifi</label>
-									</div>
-								</div>
-								<div class="mb-3 wifi">
-									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" role="switch" name="voip" id="voipSwitcher" value="1">
-										<input name="voip" type="hidden" value="0">
-										<label class="form-check-label" for="voipSwitcher">VOIP</label>
-									</div>
-								</div>
-								<div class="mb-3">
-									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" role="switch" id="advancedSwitcher" checked>
-										<label class="form-check-label" for="advancedSwitcher">Haladó beállítások</label>
-									</div>
-								</div>
 							</form>
+							<div class="mb-3">
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" role="switch" id="advancedSwitcher" checked>
+									<label class="form-check-label" for="advancedSwitcher">Haladó beállítások</label>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="accordion wifi" id="accordionSettings">
+			<div class="accordion" id="accordionSettings">
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="headingOne">
 						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -118,7 +104,16 @@
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
 						<div class="accordion-body">
-							<form action="/api/auth" class="needs-validation no-auto-submit" novalidate>
+							<form action="/api/settings">
+								<div class="mb-3">
+									<div class="form-check form-switch">
+										<input class="form-check-input" type="checkbox" role="switch" name="sta" id="wifiSwitcher" value="1">
+										<input name="sta" type="hidden" value="0">
+										<label class="form-check-label" for="wifiSwitcher">Wifi</label>
+									</div>
+								</div>
+							</form>
+							<form action="/api/settings" class="needs-validation no-auto-submit wifi" novalidate>
 								<div class="mb-3">
 									<label for="ssidText">SSID</label>
 									<input name="ssid" type="text" class="form-control" id="ssidText" placeholder="SSID" required>
@@ -134,77 +129,92 @@
 						</div>
 					</div>
 				</div>
-				<div class="accordion-item voip">
+
+				<div class="accordion-item wifi">
 					<h2 class="accordion-header" id="headingTwo">
 						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-							Hívást kezdeményező VOIP fiók
+							VOIP beállítások
 						</button>
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
 						<div class="accordion-body">
-							<form id="accountForm" class="needs-validation" novalidate>
-								<div class="mb-3">
-									<label for="accountSipTextField1">VOIP felhasználónév</label>
-									<input name="accountSipTextField1" type="text" class="form-control" id="accountSipTextField1" placeholder="VOIP felhasználónév" required>
-									<div class="invalid-feedback">Kötelező értéket megadni.</div>
-								</div>
-								<div class="mb-3">
-									<label for="accountSipTextField2">VOIP szerver</label>
-									<input name="accountSipTextField2" type="text" class="form-control" id="accountSipTextField2" placeholder="VOIP szerver" required>
-									<div class="invalid-feedback">Kötelező értéket megadni.</div>
-								</div>
-								<div class="mb-3">
-									<label for="accountPasswordTextField">Jelszó</label>
-									<input name="accountPasswordTextField" type="password" class="form-control" id="accountPasswordTextField" placeholder="Jelszó" required>
-									<div class="invalid-feedback">Kötelező értéket megadni.</div>
-								</div>
-								<div class="mb-3">
-									<label for="accountOutboundTextField">Outbound proxy</label>
-									<input name="accountOutboundTextField" type="text" class="form-control" id="accountOutboundTextField" placeholder="Outbound proxy">
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item voip">
-					<h2 class="accordion-header" id="headingThree">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-							Hívást fogadó VOIP fiók
-						</button>
-					</h2>
-					<div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingThree">
-						<div class="accordion-body">
-							<form id="phonebookForm" class="needs-validation" novalidate>
-								<div class="kt-contact">
-									<div class="mb-3 hidden">
-										<label for="name1TextField">Név</label>
-										<input name="name1TextField" value="user" type="text" class="form-control" id="name1TextField" placeholder="Név" required>
-										<div class="invalid-feedback">Kötelező értéket megadni.</div>
+							<div class="mb-3 wifi">
+								<form action="/api/settings">
+									<div class="form-check form-switch">
+										<input class="form-check-input" type="checkbox" role="switch" name="voip" id="voipSwitcher" value="1">
+										<input name="voip" type="hidden" value="0">
+										<label class="form-check-label" for="voipSwitcher">VOIP</label>
 									</div>
-									<div class="mb-3">
-										<label for="sip1TextField1">VOIP felhasználónév</label>
-										<input name="sip1TextField1" type="text" class="form-control" id="sip1TextField1" placeholder="VOIP felhasználónév" required>
-										<div class="invalid-feedback">Kötelező értéket megadni.</div>
-									</div>
-									<div class="mb-3">
-										<label for="sip1TextField2">VOIP szerver</label>
-										<input name="sip1TextField2" type="text" class="form-control" id="sip1TextField2" placeholder="VOIP felhasználónév" required>
-										<div class="invalid-feedback">Kötelező értéket megadni.</div>
-									</div>
+								</form>
+							</div>
+
+							<div class="card voip">
+								<div class="card-body">
+									<h5 class="card-title">Hívást végző VOIP fiók</h5>
+									<p class="card-text">
+										<form id="accountForm" class="needs-validation" novalidate>
+											<div class="mb-3">
+												<label for="accountSipTextField1">VOIP felhasználónév</label>
+												<input name="accountSipTextField1" type="text" class="form-control" id="accountSipTextField1" placeholder="VOIP felhasználónév" required>
+												<div class="invalid-feedback">Kötelező értéket megadni.</div>
+											</div>
+											<div class="mb-3">
+												<label for="accountSipTextField2">VOIP szerver</label>
+												<input name="accountSipTextField2" type="text" class="form-control" id="accountSipTextField2" placeholder="VOIP szerver" required>
+												<div class="invalid-feedback">Kötelező értéket megadni.</div>
+											</div>
+											<div class="mb-3">
+												<label for="accountPasswordTextField">Jelszó</label>
+												<input name="accountPasswordTextField" type="password" class="form-control" id="accountPasswordTextField" placeholder="Jelszó" required>
+												<div class="invalid-feedback">Kötelező értéket megadni.</div>
+											</div>
+											<div class="mb-3">
+												<label for="accountOutboundTextField">Outbound proxy</label>
+												<input name="accountOutboundTextField" type="text" class="form-control" id="accountOutboundTextField" placeholder="Outbound proxy">
+											</div>
+										</form>
+									</p>
 								</div>
-								<!--
-								<div class="kt-contact hidden">
-									<div class="mb-3">
-										<label for="name2TextField">2. Név</label>
-										<input name="name2TextField" type="text" class="form-control" id="name2TextField" placeholder="Név">
-									</div>
-									<div class="mb-3">
-										<label for="sip2TextField">2. VOIP felhasználónév</label>
-										<input name="sip2TextField" type="text" class="form-control" id="sip2TextField" placeholder="2. VOIP felhasználónév">
-									</div>
+							</div>
+
+							<div class="card voip">
+								<div class="card-body">
+									<h5 class="card-title">Hívást fogadó VOIP fiók</h5>
+									<p class="card-text">
+										<form id="phonebookForm" class="needs-validation" novalidate>
+											<div class="kt-contact">
+												<div class="mb-3 hidden">
+													<label for="name1TextField">Név</label>
+													<input name="name1TextField" value="user" type="text" class="form-control" id="name1TextField" placeholder="Név" required>
+													<div class="invalid-feedback">Kötelező értéket megadni.</div>
+												</div>
+												<div class="mb-3">
+													<label for="sip1TextField1">VOIP felhasználónév</label>
+													<input name="sip1TextField1" type="text" class="form-control" id="sip1TextField1" placeholder="VOIP felhasználónév" required>
+													<div class="invalid-feedback">Kötelező értéket megadni.</div>
+												</div>
+												<div class="mb-3">
+													<label for="sip1TextField2">VOIP szerver</label>
+													<input name="sip1TextField2" type="text" class="form-control" id="sip1TextField2" placeholder="VOIP felhasználónév" required>
+													<div class="invalid-feedback">Kötelező értéket megadni.</div>
+												</div>
+											</div>
+											<!--
+											<div class="kt-contact hidden">
+												<div class="mb-3">
+													<label for="name2TextField">2. Név</label>
+													<input name="name2TextField" type="text" class="form-control" id="name2TextField" placeholder="Név">
+												</div>
+												<div class="mb-3">
+													<label for="sip2TextField">2. VOIP felhasználónév</label>
+													<input name="sip2TextField" type="text" class="form-control" id="sip2TextField" placeholder="2. VOIP felhasználónév">
+												</div>
+											</div>
+											-->
+										</form>
+									</p>
 								</div>
-								-->
-							</form>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -220,7 +230,7 @@
 				</h2>
 				<div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour">
 					<div class="accordion-body">
-						<form action="/api/icom" class="needs-validation" novalidate>
+						<form action="/api/settings" class="needs-validation" novalidate>
 							<div class="mb-3">
 								<label for="cvolText">Beep hangerő</label>
 								<input name="cvol" type="number" class="form-control" id="cvolText" placeholder="Beep hangerő" min="0" max="100" required>

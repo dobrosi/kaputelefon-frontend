@@ -6,6 +6,7 @@ var ansi_up = new AnsiUp;
 var otaReleaseUrls = ['http://kaputelefon-backend.cserke.com', '/api/ota'];
 var indexReleaseUrls = ['http://kaputelefon-frontend.cserke.com', '/file/html']
 var corsProxyUrl = 'http://allorigins.cserke.com';
+var actionSettings = '/api/settings';
 var actionContacts = '/file/contacts';
 var actionAccounts = '/file/accounts';
 var logTimeout;
@@ -15,7 +16,6 @@ var lastChangeForm;
 var logHtml = '';
 var bsCollapse, toastInfo, toastError;
 var icon;
-var loadingForm = 0;
 
 var defaultConsole = window.console;
 var console = {};
@@ -58,25 +58,6 @@ function initGui() {
 	document.querySelectorAll('.versionDiv').forEach(function(versionDiv){versionDiv.innerHTML = version});
     getFirmwareVersion();
     getMacAddress();
-}
-
-function loadFormData(form) {
-	loadingForm++;
-	let action = form.getAttribute('action');
-	if (action != null) {
-		ajax('GET', action, function(response) {
-			if(response.responseText !== '') {
-				loadingForm--;
-				jsonToForm(form, JSON.parse(response.responseText.replace(',}', '}')));
-				if (--loadingForm === 0) {
-					showHideBlocks();
-					showHide('#menuItems', true);
-					showHide('#settings', true);
-					hideLoading();
-				}
-			}
-		});
-	}
 }
 
 function initForms() {
@@ -276,8 +257,18 @@ function printInfo(e, div) {
 }
 
 function loadFormsData() {
-	var i = 0;
-	document.querySelectorAll('form').forEach(form => setTimeout(() => loadFormData(form), ++i * 200));
+	ajax(
+		'GET',
+		actionSettings,
+		response => {
+			let json = JSON.parse(response.responseText.replace(',}', '}'))
+			document.querySelectorAll('form').forEach(form => jsonToForm(form, json));
+			showHideBlocks();
+			showHide('#menuItems', true);
+			showHide('#settings', true);
+			hideLoading();
+		}
+	)
 	ajax(
 		'GET',
 		actionContacts,
@@ -356,12 +347,11 @@ function getLine(lines, arg) {
 }
 
 function getAccounts(form, content) {
-	let d
-	d = '<sip:' + form.querySelector('#accountSipTextField1').value + '@' + form.querySelector('#accountSipTextField2').value;
+	let d = '<sip:' + form.querySelector('#accountSipTextField1').value + '@' + form.querySelector('#accountSipTextField2').value;
 	d += ';transport=udp>;'
 	d += 'auth_pass=' + form.querySelector('#accountPasswordTextField').value + ";";
 	d += 'outbound="' + form.querySelector('#accountOutboundTextField').value + '"';
-	if (content !== null && content !== '') {
+	if (content != null && content !== '') {
 		let lines = content.split(';');
 		let words = getUserAndServer(lines[0].split('<')[1]);
 		form.querySelector('#accountSipTextField1').value = words[0];

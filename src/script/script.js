@@ -44,6 +44,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		console.log(e);
 	}
 	initGui();
+
+	//afterLoadFormsData()
 });
 
 function initGui() {
@@ -82,6 +84,35 @@ function initForms() {
         }
 	});
 }
+
+function loadFormsData() {
+	ajax(
+		'GET',
+		actionSettings,
+		response => {
+			let json = JSON.parse(response.responseText.replace(',}', '}'))
+			document.querySelectorAll('form').forEach(form => jsonToForm(form, json));
+			afterLoadFormsData();
+		}
+	)
+	ajax(
+		'GET',
+		actionContacts,
+		r => getContacts(document.getElementById('phonebookForm'), r.responseText))
+	ajax(
+		'GET',
+		actionAccounts,
+		r => getAccounts(document.getElementById('accountForm'),
+			r.responseText));
+}
+
+function afterLoadFormsData() {
+	showHideBlocks();
+	showHide('#menuItems', true);
+	showHide('#settings', true);
+	hideLoading();
+}
+
 
 function invokeKeyupTimeout(event, form) {
     if (keyupTimeout != null) {
@@ -254,30 +285,6 @@ function printInfo(e, div) {
         div = "logInfoText";
     }
     document.getElementById(div).innerHTML = e;
-}
-
-function loadFormsData() {
-	ajax(
-		'GET',
-		actionSettings,
-		response => {
-			let json = JSON.parse(response.responseText.replace(',}', '}'))
-			document.querySelectorAll('form').forEach(form => jsonToForm(form, json));
-			showHideBlocks();
-			showHide('#menuItems', true);
-			showHide('#settings', true);
-			hideLoading();
-		}
-	)
-	ajax(
-		'GET',
-		actionContacts,
-		r => getContacts(document.getElementById('phonebookForm'), r.responseText))
-	ajax(
-		'GET',
-		actionAccounts,
-		r => getAccounts(document.getElementById('accountForm'),
-		r.responseText));
 }
 
 function saveConfiguration() {

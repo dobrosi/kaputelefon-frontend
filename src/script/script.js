@@ -1,6 +1,4 @@
-var configuration = {
-	advancedMode: false
-};
+var configuration;
 
 var ansi_up = new AnsiUp;
 var otaReleaseUrls = ['http://kaputelefon-backend.cserke.com', '/api/ota'];
@@ -14,7 +12,7 @@ var keyupTimeout = null
 var lastChangeEvent;
 var lastChangeForm;
 var logHtml = '';
-var bsCollapse, toastInfo, toastError;
+var toastInfo, toastError;
 var icon;
 
 var defaultConsole = window.console;
@@ -39,20 +37,31 @@ window.onerror=function(msg, url, linenumber){
 
 document.addEventListener("DOMContentLoaded", function() {
 	try {
-		configuration = JSON.parse(localStorage.getItem("configuration"));
+		loadConfiguration();
 	} catch (e) {
 		console.log(e);
 	}
+	if (configuration == null) {
+		configuration = {
+			advancedMode: false
+		};
+	}
 	initGui();
-
 	//afterLoadFormsData()
 });
+
+function loadConfiguration() {
+	configuration = JSON.parse(localStorage.getItem("configuration"));
+}
+
+function saveConfiguration() {
+	localStorage.setItem("configuration", JSON.stringify(configuration));
+}
 
 function initGui() {
 	showLoading('Betöltés...');
 	initChangeEvents();
 	initLogfile();
-	bsCollapse = new bootstrap.Collapse(document.getElementById('navbarSupportedContent'));
 	toastInfo = new bootstrap.Toast(document.getElementById('toastInfo'));
 	toastError = new bootstrap.Toast(document.getElementById('toastError'));
 	initAdvancedMode();
@@ -252,9 +261,6 @@ function ajax(protocol, url, successCallback, data) {
 
 function switchAdvanced(moreAdvancedMode) {
 	let v = document.getElementById('advancedSwitcher').checked;
-	if (v) {
-	    new bootstrap.Collapse(document.getElementById('navbarSupportedContent'));
-	}
 	configuration.advancedMode = v;
 	saveConfiguration();
     showHide('.kt-advanced', v);
@@ -285,10 +291,6 @@ function printInfo(e, div) {
         div = "logInfoText";
     }
     document.getElementById(div).innerHTML = e;
-}
-
-function saveConfiguration() {
-	localStorage.setItem("configuration", JSON.stringify(configuration));
 }
 
 function jsonToForm(f, data) {
@@ -426,8 +428,7 @@ function checkUpdate(releaseUrls) {
 			oReq.responseType = "blob";
 			oReq.onload = function() {
 				showInfo('Letöltés: ' + release.name);
-  				var blob = oReq.response;
-				ajax('PUT', releaseUrls[1], null, blob, () => setTimeout(() => reload(), 1000));
+				ajax('PUT', releaseUrls[1], null, oReq.response, () => setTimeout(() => reload(), 1000));
 			}
 			oReq.send();
 		});

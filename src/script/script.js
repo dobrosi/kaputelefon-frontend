@@ -1,9 +1,9 @@
 var configuration;
 
 var ansi_up = new AnsiUp;
-var otaReleaseUrls = ['http://kaputelefon-backend.cserke.com', '/api/ota'];
-var indexReleaseUrls = ['http://kaputelefon-frontend.cserke.com', '/file/html']
-var corsProxyUrl = 'http://allorigins.cserke.com';
+var otaReleaseUrls = ['https://api.github.com/repos/dobrosi/jozsefutca/releases/latest', '/api/ota'];
+var indexReleaseUrls = ['https://api.github.com/repos/dobrosi/kaputelefon-frontend/releases/latest', '/file/html']
+var corsProxyUrl = 'http://kapulog.dyndns.hu/allorigins?url=';
 var actionSettings = '/api/settings';
 var actionContacts = '/file/contacts';
 var actionAccounts = '/file/accounts';
@@ -419,12 +419,12 @@ function menu(l) {
 
 function checkUpdate(releaseUrls) {
     showLoading('Frissítés folyamatban...');
-	ajax('GET', corsProxyUrl + '/get?url=' + releaseUrls[0],
+	ajax('GET', corsProxyUrl + releaseUrls[0],
 		response => {
-			let release = JSON.parse(JSON.parse(response.responseText).contents).assets[0];
+			let release = JSON.parse(response.responseText);
 			let url = release.browser_download_url;
 			let oReq = new XMLHttpRequest();
-			oReq.open("GET", corsProxyUrl + '/raw?url=' + url, true);
+			oReq.open("GET", corsProxyUrl + url + "&binary=true", true);
 			oReq.responseType = "blob";
 			oReq.onload = function() {
 				showInfo('Letöltés: ' + release.name);

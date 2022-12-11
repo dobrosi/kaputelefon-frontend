@@ -322,14 +322,9 @@ function saveFile(form) {
 	let d;
 	let action;
 	let callback = null;
-	if (form.id === 'indexFileForm') {
+	if (form.id === 'indexFileForm' || form.id === 'otaFileForm') {
+		action = form.id === 'indexFileForm' ? indexReleaseUrls[1] : otaReleaseUrls[1];
 		showLoading('Feltöltés folyamatban...');
-		action = indexReleaseUrls[1];
-		d = getFile(form);
-		callback = reload;
-	} else if (form.id === 'otaFileForm') {
-		showLoading('Feltöltés folyamatban...');
-		action = otaReleaseUrls[1];
 		d = getFile(form);
 		callback = reload;
 	} else if (form.id === 'phonebookForm') {
@@ -428,7 +423,7 @@ function checkUpdate(releaseUrls) {
 			oReq.responseType = "blob";
 			oReq.onload = function() {
 				showInfo('Letöltés: ' + release.name);
-				ajax('PUT', releaseUrls[1], null, oReq.response, () => setTimeout(() => reload(), 1000));
+				ajax('PUT', releaseUrls[1], reload, oReq.response);
 			}
 			oReq.send();
 		});

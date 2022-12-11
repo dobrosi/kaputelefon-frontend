@@ -19,378 +19,376 @@
 </head>
 
 <body>
-
-		<header>
-			<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
-				<div class="container-fluid">
-					<a class="navbar-brand"><b>Kaputelefon</b> <div class="versionDiv"></div></a>
-				</div>
-			</nav>
-			<nav class="kt-advanced navbar navbar-expand-lg navbar-dark fixed-top bg-primary hidden">
-				<div class="container-fluid">
-					<a class="navbar-brand" href="#"><b>Kaputelefon</b> <div class="versionDiv"></div></a>
-					<button id="navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-					<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="navbar-nav hidden" id="menuItems">
-							<li class="nav-item">
-								<b><a class="nav-link" href="#settings" onclick="menu(this)" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-sliders"></i> Beállítások</a></b>
-							</li>
-							<li class="nav-item">
-								<b><a class="nav-link" href="#admin" onclick="menu(this)" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-bell"></i> Kapu</a></b>
-							</li>
-							<li class="nav-item">
-								<b><a class="nav-link" href="#service" onclick="menu(this)" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-wrench"></i> Szervíz</a></b>
-							</li>
-							<li class="nav-item">
-								<b><a class="nav-link" href="#" onclick="openLogWindow()" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-doc-text"></i> Log</a></b>
-							</li>
-							<li class="nav-item voip">
-								<b><a class="nav-link" href="#" onclick="testCall()" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-phone"></i> Próbahívás</a></b>
-							</li>
-							<li class="nav-item">
-								<b><a class="nav-link" href="#" onclick="restart()" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-cw"></i> Újraindítás</a></b>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-		</header>
-
-	<!-- Begin page content -->
-
-		<main role="main" class="container page hidden" id="settings">
-			<div class="accordion" id="accordionBasic">
-				<div class="accordion-item">
-					<div id="collapseBasic" class="accordion-collapse collapse show" aria-labelledby="headingBasic">
-						<div class="accordion-body">
-							<form action="/api/settings" class="needs-validation" novalidate>
-								<div class="mb-3">
-									<label for="typeSelect">Kaputelefon típusa</label>
-									<select name="type" class="form-select small" id="typeSelect" required>
-										<option value="codefon">Codefon</option>
-										<option value="mkt">MKT</option>
-										<option value="laskomex">Laskomex</option>
-									</select>
-								</div>
-								<div class="mb-3 codeBlock">
-									<label for="codeText">Kapukód</label>
-									<input name="code" type="number" class="form-control" id="codeText" placeholder="Kapukód" min="1" max="127" required>
-									<div class="invalid-feedback">1-127 tartományban választott értéket kötelező megadni.</div>
-								</div>
-								<div class="mb-3">
-									<label for="ivolText">Csengetés hangerő</label>
-									<input name="ivol" type="range" class="form-range" id="ivolText" placeholder="Csengetés hangerő" min="0" max="100" required>
-									<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-								</div>
-							</form>
-							<div class="mb-3">
-								<div class="form-check form-switch">
-									<input class="form-check-input" type="checkbox" role="switch" id="advancedSwitcher" checked>
-									<label class="form-check-label" for="advancedSwitcher">Haladó beállítások</label>
-								</div>
-							</div>
-						</div>
-					</div>
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
+			<div class="container-fluid">
+				<a class="navbar-brand"><b>Kaputelefon</b> <div class="versionDiv"></div></a>
+			</div>
+		</nav>
+		<nav class="kt-advanced navbar navbar-expand-lg navbar-dark fixed-top bg-primary hidden">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#"><b>Kaputelefon</b> <div class="versionDiv"></div></a>
+				<button id="navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav hidden" id="menuItems">
+						<li class="nav-item">
+							<b><a class="nav-link" href="#settings" onclick="menu(this)" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-sliders"></i> Beállítások</a></b>
+						</li>
+						<li class="nav-item">
+							<b><a class="nav-link" href="#admin" onclick="menu(this)" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-bell"></i> Kapu</a></b>
+						</li>
+						<li class="nav-item">
+							<b><a class="nav-link" href="#service" onclick="menu(this)" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-wrench"></i> Szervíz</a></b>
+						</li>
+						<li class="nav-item">
+							<b><a class="nav-link" href="#" onclick="openLogWindow()" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-doc-text"></i> Log</a></b>
+						</li>
+						<li class="nav-item voip">
+							<b><a class="nav-link" href="#" onclick="testCall()" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-phone"></i> Próbahívás</a></b>
+						</li>
+						<li class="nav-item">
+							<b><a class="nav-link" href="#" onclick="restart()" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="icon-cw"></i> Újraindítás</a></b>
+						</li>
+					</ul>
 				</div>
 			</div>
-			<div class="accordion" id="accordionSettings">
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingOne">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-							Wifi beállítások
-						</button>
-					</h2>
-					<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
-						<div class="accordion-body">
-							<form action="/api/settings">
-								<div class="mb-3">
-									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" role="switch" name="sta" id="wifiSwitcher" value="1">
-										<input name="sta" type="hidden" value="0">
-										<label class="form-check-label" for="wifiSwitcher">Wifi</label>
-									</div>
-								</div>
-							</form>
-							<form action="/api/settings" class="needs-validation no-auto-submit wifi" novalidate>
-								<div class="mb-3">
-									<label for="ssidText">SSID</label>
-									<input name="ssid" type="text" class="form-control" id="ssidText" placeholder="SSID" required>
-									<div class="invalid-feedback">Kötelező értéket megadni.</div>
-								</div>
-								<div class="mb-3">
-									<label for="passwordText">Jelszó</label>
-									<input name="password" type="password" class="form-control" id="passwordText" placeholder="Jelszó" required>
-									<div class="invalid-feedback">Kötelező értéket megadni.</div>
-								</div>
-								<button type="submit" class="btn btn-primary"><i class="icon-wifi"></i> Kapcsolódás</button>
-							</form>
-						</div>
-					</div>
-				</div>
+		</nav>
+	</header>
 
-				<div class="accordion-item wifi">
-					<h2 class="accordion-header" id="headingTwo">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-							VOIP beállítások
-						</button>
-					</h2>
-					<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
-						<div class="accordion-body">
-							<div class="mb-3 wifi">
-								<form action="/api/settings">
-									<div class="form-check form-switch">
-										<input class="form-check-input" type="checkbox" role="switch" name="voip" id="voipSwitcher" value="1">
-										<input name="voip" type="hidden" value="0">
-										<label class="form-check-label" for="voipSwitcher">VOIP</label>
-									</div>
-								</form>
-							</div>
+<!-- Begin page content -->
 
-							<div class="card voip">
-								<div class="card-body">
-									<h5 class="card-title">Hívást végző VOIP fiók</h5>
-									<p class="card-text">
-										<form id="accountForm" class="needs-validation" novalidate>
-											<div class="mb-3">
-												<label for="accountSipTextField1">VOIP felhasználónév</label>
-												<input name="accountSipTextField1" type="text" class="form-control" id="accountSipTextField1" placeholder="VOIP felhasználónév" required>
-												<div class="invalid-feedback">Kötelező értéket megadni.</div>
-											</div>
-											<div class="mb-3">
-												<label for="accountSipTextField2">VOIP szerver</label>
-												<input name="accountSipTextField2" type="text" class="form-control" id="accountSipTextField2" placeholder="VOIP szerver" required>
-												<div class="invalid-feedback">Kötelező értéket megadni.</div>
-											</div>
-											<div class="mb-3">
-												<label for="accountPasswordTextField">Jelszó</label>
-												<input name="accountPasswordTextField" type="password" class="form-control" id="accountPasswordTextField" placeholder="Jelszó" required>
-												<div class="invalid-feedback">Kötelező értéket megadni.</div>
-											</div>
-											<div class="mb-3">
-												<label for="accountOutboundTextField">Outbound proxy</label>
-												<input name="accountOutboundTextField" type="text" class="form-control" id="accountOutboundTextField" placeholder="Outbound proxy">
-											</div>
-										</form>
-									</p>
-								</div>
-							</div>
-
-							<div class="card voip">
-								<div class="card-body">
-									<h5 class="card-title">Hívást fogadó VOIP fiók</h5>
-									<p class="card-text">
-										<form id="phonebookForm" class="needs-validation" novalidate>
-											<div class="kt-contact">
-												<div class="mb-3 hidden">
-													<label for="name1TextField">Név</label>
-													<input name="name1TextField" value="user" type="text" class="form-control" id="name1TextField" placeholder="Név" required>
-													<div class="invalid-feedback">Kötelező értéket megadni.</div>
-												</div>
-												<div class="mb-3">
-													<label for="sip1TextField1">VOIP felhasználónév</label>
-													<input name="sip1TextField1" type="text" class="form-control" id="sip1TextField1" placeholder="VOIP felhasználónév" required>
-													<div class="invalid-feedback">Kötelező értéket megadni.</div>
-												</div>
-												<div class="mb-3">
-													<label for="sip1TextField2">VOIP szerver</label>
-													<input name="sip1TextField2" type="text" class="form-control" id="sip1TextField2" placeholder="VOIP felhasználónév" required>
-													<div class="invalid-feedback">Kötelező értéket megadni.</div>
-												</div>
-											</div>
-											<!--
-											<div class="kt-contact hidden">
-												<div class="mb-3">
-													<label for="name2TextField">2. Név</label>
-													<input name="name2TextField" type="text" class="form-control" id="name2TextField" placeholder="Név">
-												</div>
-												<div class="mb-3">
-													<label for="sip2TextField">2. VOIP felhasználónév</label>
-													<input name="sip2TextField" type="text" class="form-control" id="sip2TextField" placeholder="2. VOIP felhasználónév">
-												</div>
-											</div>
-											-->
-										</form>
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</main>
-		<main role="main" class="container page hidden" id="admin">
-			<div class="accordion" id="accordionAdmins">
-				<div class="accordion-item kt-advanced">
-				<h2 class="accordion-header" id="headingFour">
-					<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-						Kapu beállítások
-					</button>
-				</h2>
-				<div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour">
+	<main role="main" class="container page hidden" id="settings">
+		<div class="accordion" id="accordionBasic">
+			<div class="accordion-item">
+				<div id="collapseBasic" class="accordion-collapse collapse show" aria-labelledby="headingBasic">
 					<div class="accordion-body">
 						<form action="/api/settings" class="needs-validation" novalidate>
 							<div class="mb-3">
-								<label for="cvolText">Beep hangerő</label>
-								<input name="cvol" type="range" class="form-range" id="cvolText" placeholder="Beep hangerő" min="0" max="100" required>
+								<label for="typeSelect">Kaputelefon típusa</label>
+								<select name="type" class="form-select small" id="typeSelect" required>
+									<option value="codefon">Codefon</option>
+									<option value="mkt">MKT</option>
+									<option value="laskomex">Laskomex</option>
+								</select>
+							</div>
+							<div class="mb-3 codeBlock">
+								<label for="codeText">Kapukód</label>
+								<input name="code" type="number" class="form-control" id="codeText" placeholder="Kapukód" min="1" max="127" required>
+								<div class="invalid-feedback">1-127 tartományban választott értéket kötelező megadni.</div>
+							</div>
+							<div class="mb-3">
+								<label for="ivolText">Csengetés hangerő</label>
+								<input name="ivol" type="range" class="form-range" id="ivolText" placeholder="Csengetés hangerő" min="0" max="100" required>
 								<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<div class="mb-3">
-								<label for="hvolText">Fejhallgató hangerő</label>
-								<input name="hvol" type="range" class="form-range" id="hvolText" placeholder="Fejhallgató hangerő" min="0" max="100" required>
-								<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<div class="mb-3">
-								<label for="vvolText">Vonali audió feszültség</label>
-								<input name="vvol" type="range" class="form-range" id="vvolText" placeholder="Vonali audió feszültség" min="0" max="100" required>
-								<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<div class="mb-3">
-								<label for="lvolText">Vonali audió hangerő</label>
-								<input name="lvol" type="range" class="form-range" id="lvolText" placeholder="Vonali audió hangerő" min="0" max="100" required>
-								<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							<div class="mb-3">
-								<label for="hdpxText">HDPX</label>
-								<input name="hdpx" class="form-check-input" type="checkbox" value="1" id="hdpxText">
-								<input name="hdpx" type="hidden" value="0">
-							</div>
-							<!--
-							<div class="mb-3">
-								<label for="staText">STA</label>
-								<input name="sta" class="form-check-input" type="checkbox" value="1" id="staText">
-								<input name="sta" type="hidden" value="0">
-							</div>
-
-							<div class="mb-3">
-								<label for="voipText">VOIP</label>
-								<input name="voip" class="form-check-input" type="checkbox" value="1" id="voipText">
-								<input name="voip" type="hidden" value="0">
-							</div>
-							-->
-							<div class="mb-3">
-								<label for="flogText">FLOG</label>
-								<input name="flog" class="form-check-input" type="checkbox" value="1" id="flogText">
-								<input name="flog" type="hidden" value="0">
-							</div>
-							<!--
-							<div class="mb-3">
-								<label for="mvolText">Mikrofon hangerő</label>
-								<input name="mvol" type="number" class="form-control" id="mvolText" placeholder="Mikrofon hangerő" min="0" max="255" required>
-								<div class="invalid-feedback">0-255 tartományban választott értéket kötelező megadni.</div>
-							</div>
-							-->
-							<div class="mb-3">
-								<label for="rvolText">Kapucsengő hangerő</label>
-								<input name="rvol" type="range" class="form-range" id="rvolText" placeholder="Ajtócsengő hangerő" min="0" max="255" required>
-								<div class="invalid-feedback">0-255 tartományban választott értéket kötelező megadni.</div>
 							</div>
 						</form>
-					</div>
-
-				</div>
-			</div>
-			</div>
-		</main>
-		<main role="main" class="container page hidden" id="service">
-			<div class="accordion" id="accordionAdmin">
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingFw">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFw" aria-expanded="false" aria-controls="collapseFw">
-							Firmware
-						</button>
-					</h2>
-					<div id="collapseFw" class="accordion-collapse collapse show"  aria-labelledby="headingFw">
-						<div class="accordion-body">
-							<div class="mb-3">
-								<button type="button" class="btn btn-primary" onclick="factoryReset()">Gyári beállítások visszaállítása</button>
-							</div>
-							<div class="mb-3">
-								<button type="button" class="btn btn-primary" onclick="checkUpdate(otaReleaseUrls)">Firmware frissítés</button>
-							</div>
-							<div class="mb-3">
-								<form id="otaFileForm" class="needs-validation" novalidate>
-									<input id="otaFile" name="otaFile" type="file" class="file hidden" data-show-preview="false" required>
-									<button type="button" class="btn btn-primary" onclick="document.getElementById('otaFile').click()">Firmware fájl feltöltés</button>
-								</form>
-							</div>
-							<div class="mb-3 kt-more-advanced">
-								<button type="button" class="btn btn-primary" onclick="checkUpdate(indexReleaseUrls)">Index fájl frissítés</button>
-							</div>
-							<div class="mb-3 kt-more-advanced">
-								<form id="indexFileForm" class="needs-validation" novalidate>
-									<input id="indexFile" name="indexFile" type="file" class="file hidden" data-show-preview="false" required>
-									<button type="button" class="btn btn-primary" onclick="document.getElementById('indexFile').click()">Index fájl feltöltés</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="kt-more-advanced card">
-					<div class="card-body">
 						<div class="mb-3">
-							<label for="logsleep">Log (F12)</label>
-							<select name="logsleep" class="form-select small" id="logsleep">
-								<option value="-1">Log frissítés</option>
-								<option value="0">0 sec</option>
-								<option value="1">1 sec</option>
-								<option value="3">3 sec</option>
-								<option value="5">5 sec</option>
-								<option value="10">10 sec</option>
-								<option value="15">15 sec</option>
-								<option value="30">30 sec</option>
-								<option value="60">1 min</option>
-							</select>
-						</div>
-						<form action="/api/settings" class="needs-validation" novalidate>
-							<div class="mb-3">
-								<label for="testmodeText">Test mode</label>
-								<input name="testmode" type="number" class="form-control" id="testmodeText" placeholder="Test mode" readonly>
+							<div class="form-check form-switch">
+								<input class="form-check-input" type="checkbox" role="switch" id="advancedSwitcher" checked>
+								<label class="form-check-label" for="advancedSwitcher">Haladó beállítások</label>
 							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="accordion" id="accordionSettings">
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="headingOne">
+					<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+						Wifi beállítások
+					</button>
+				</h2>
+				<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+					<div class="accordion-body">
+						<form action="/api/settings">
 							<div class="mb-3">
-								<label for="ctimText">Timeout</label>
-								<input name="ctim" type="number" class="form-control" id="ctimText" placeholder="Timeout" min="0" max="255" required>
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" role="switch" name="sta" id="wifiSwitcher" value="1">
+									<input name="sta" type="hidden" value="0">
+									<label class="form-check-label" for="wifiSwitcher">Wifi</label>
+								</div>
+							</div>
+						</form>
+						<form action="/api/settings" class="needs-validation no-auto-submit wifi" novalidate>
+							<div class="mb-3">
+								<label for="ssidText">SSID</label>
+								<input name="ssid" type="text" class="form-control" id="ssidText" placeholder="SSID" required>
 								<div class="invalid-feedback">Kötelező értéket megadni.</div>
 							</div>
+							<div class="mb-3">
+								<label for="passwordText">Jelszó</label>
+								<input name="password" type="password" class="form-control" id="passwordText" placeholder="Jelszó" required>
+								<div class="invalid-feedback">Kötelező értéket megadni.</div>
+							</div>
+							<button type="submit" class="btn btn-primary"><i class="icon-wifi"></i> Kapcsolódás</button>
 						</form>
 					</div>
 				</div>
+			</div>
 
-				<div class="card">
-					<div class="card-body">
-						<div class="mb-3" onclick="switchAdvanced(true)">
-							<label for="codeText">MAC cím:</label>&nbsp;<label id="macAddressDiv"></label>
+			<div class="accordion-item wifi">
+				<h2 class="accordion-header" id="headingTwo">
+					<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+						VOIP beállítások
+					</button>
+				</h2>
+				<div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo">
+					<div class="accordion-body">
+						<div class="mb-3 wifi">
+							<form action="/api/settings">
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" role="switch" name="voip" id="voipSwitcher" value="1">
+									<input name="voip" type="hidden" value="0">
+									<label class="form-check-label" for="voipSwitcher">VOIP</label>
+								</div>
+							</form>
 						</div>
-						<div class="mb-3">
-							<label for="codeText">Firmware verzió:</label>&nbsp;<label id="fwVersionDiv"></label>
+
+						<div class="card voip">
+							<div class="card-body">
+								<h5 class="card-title">Hívást végző VOIP fiók</h5>
+								<p class="card-text">
+									<form id="accountForm" class="needs-validation" novalidate>
+										<div class="mb-3">
+											<label for="accountSipTextField1">VOIP felhasználónév</label>
+											<input name="accountSipTextField1" type="text" class="form-control" id="accountSipTextField1" placeholder="VOIP felhasználónév" required>
+											<div class="invalid-feedback">Kötelező értéket megadni.</div>
+										</div>
+										<div class="mb-3">
+											<label for="accountSipTextField2">VOIP szerver</label>
+											<input name="accountSipTextField2" type="text" class="form-control" id="accountSipTextField2" placeholder="VOIP szerver" required>
+											<div class="invalid-feedback">Kötelező értéket megadni.</div>
+										</div>
+										<div class="mb-3">
+											<label for="accountPasswordTextField">Jelszó</label>
+											<input name="accountPasswordTextField" type="password" class="form-control" id="accountPasswordTextField" placeholder="Jelszó" required>
+											<div class="invalid-feedback">Kötelező értéket megadni.</div>
+										</div>
+										<div class="mb-3">
+											<label for="accountOutboundTextField">Outbound proxy</label>
+											<input name="accountOutboundTextField" type="text" class="form-control" id="accountOutboundTextField" placeholder="Outbound proxy">
+										</div>
+									</form>
+								</p>
+							</div>
+						</div>
+
+						<div class="card voip">
+							<div class="card-body">
+								<h5 class="card-title">Hívást fogadó VOIP fiók</h5>
+								<p class="card-text">
+									<form id="phonebookForm" class="needs-validation" novalidate>
+										<div class="kt-contact">
+											<div class="mb-3 hidden">
+												<label for="name1TextField">Név</label>
+												<input name="name1TextField" value="user" type="text" class="form-control" id="name1TextField" placeholder="Név" required>
+												<div class="invalid-feedback">Kötelező értéket megadni.</div>
+											</div>
+											<div class="mb-3">
+												<label for="sip1TextField1">VOIP felhasználónév</label>
+												<input name="sip1TextField1" type="text" class="form-control" id="sip1TextField1" placeholder="VOIP felhasználónév" required>
+												<div class="invalid-feedback">Kötelező értéket megadni.</div>
+											</div>
+											<div class="mb-3">
+												<label for="sip1TextField2">VOIP szerver</label>
+												<input name="sip1TextField2" type="text" class="form-control" id="sip1TextField2" placeholder="VOIP felhasználónév" required>
+												<div class="invalid-feedback">Kötelező értéket megadni.</div>
+											</div>
+										</div>
+										<!--
+										<div class="kt-contact hidden">
+											<div class="mb-3">
+												<label for="name2TextField">2. Név</label>
+												<input name="name2TextField" type="text" class="form-control" id="name2TextField" placeholder="Név">
+											</div>
+											<div class="mb-3">
+												<label for="sip2TextField">2. VOIP felhasználónév</label>
+												<input name="sip2TextField" type="text" class="form-control" id="sip2TextField" placeholder="2. VOIP felhasználónév">
+											</div>
+										</div>
+										-->
+									</form>
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</main>
+		</div>
+	</main>
+	<main role="main" class="container page hidden" id="admin">
+		<div class="accordion" id="accordionAdmins">
+			<div class="accordion-item kt-advanced">
+			<h2 class="accordion-header" id="headingFour">
+				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+					Kapu beállítások
+				</button>
+			</h2>
+			<div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour">
+				<div class="accordion-body">
+					<form action="/api/settings" class="needs-validation" novalidate>
+						<div class="mb-3">
+							<label for="cvolText">Beep hangerő</label>
+							<input name="cvol" type="range" class="form-range" id="cvolText" placeholder="Beep hangerő" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="hvolText">Fejhallgató hangerő</label>
+							<input name="hvol" type="range" class="form-range" id="hvolText" placeholder="Fejhallgató hangerő" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="vvolText">Vonali audió feszültség</label>
+							<input name="vvol" type="range" class="form-range" id="vvolText" placeholder="Vonali audió feszültség" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="lvolText">Vonali audió hangerő</label>
+							<input name="lvol" type="range" class="form-range" id="lvolText" placeholder="Vonali audió hangerő" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="hdpxText">HDPX</label>
+							<input name="hdpx" class="form-check-input" type="checkbox" value="1" id="hdpxText">
+							<input name="hdpx" type="hidden" value="0">
+						</div>
+						<!--
+						<div class="mb-3">
+							<label for="staText">STA</label>
+							<input name="sta" class="form-check-input" type="checkbox" value="1" id="staText">
+							<input name="sta" type="hidden" value="0">
+						</div>
 
-		<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; width: 200px;">
-			<div id="toastInfo" class="toast align-items-center hide" role="alert" aria-live="assertive" aria-atomic="true">
-				<div class="toast-header text-white bg-success">
-					<strong id="infoTitle" class="me-auto"></strong>
-					<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+						<div class="mb-3">
+							<label for="voipText">VOIP</label>
+							<input name="voip" class="form-check-input" type="checkbox" value="1" id="voipText">
+							<input name="voip" type="hidden" value="0">
+						</div>
+						-->
+						<div class="mb-3">
+							<label for="flogText">FLOG</label>
+							<input name="flog" class="form-check-input" type="checkbox" value="1" id="flogText">
+							<input name="flog" type="hidden" value="0">
+						</div>
+						<!--
+						<div class="mb-3">
+							<label for="mvolText">Mikrofon hangerő</label>
+							<input name="mvol" type="number" class="form-control" id="mvolText" placeholder="Mikrofon hangerő" min="0" max="255" required>
+							<div class="invalid-feedback">0-255 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						-->
+						<div class="mb-3">
+							<label for="rvolText">Kapucsengő hangerő</label>
+							<input name="rvol" type="range" class="form-range" id="rvolText" placeholder="Ajtócsengő hangerő" min="0" max="255" required>
+							<div class="invalid-feedback">0-255 tartományban választott értéket kötelező megadni.</div>
+						</div>
+					</form>
 				</div>
-				<div class="toast-body" id="infoText">
+
+			</div>
+		</div>
+		</div>
+	</main>
+	<main role="main" class="container page hidden" id="service">
+		<div class="accordion" id="accordionAdmin">
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="headingFw">
+					<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFw" aria-expanded="false" aria-controls="collapseFw">
+						Firmware
+					</button>
+				</h2>
+				<div id="collapseFw" class="accordion-collapse collapse show"  aria-labelledby="headingFw">
+					<div class="accordion-body">
+						<div class="mb-3">
+							<button type="button" class="btn btn-primary" onclick="factoryReset()">Gyári beállítások visszaállítása</button>
+						</div>
+						<div class="mb-3">
+							<button type="button" class="btn btn-primary" onclick="checkUpdate(otaReleaseUrls)">Firmware frissítés</button>
+						</div>
+						<div class="mb-3">
+							<form id="otaFileForm" class="needs-validation" novalidate>
+								<input id="otaFile" name="otaFile" type="file" class="file hidden" data-show-preview="false" required>
+								<button type="button" class="btn btn-primary" onclick="document.getElementById('otaFile').click()">Firmware fájl feltöltés</button>
+							</form>
+						</div>
+						<div class="mb-3 kt-more-advanced">
+							<button type="button" class="btn btn-primary" onclick="checkUpdate(indexReleaseUrls)">Index fájl frissítés</button>
+						</div>
+						<div class="mb-3 kt-more-advanced">
+							<form id="indexFileForm" class="needs-validation" novalidate>
+								<input id="indexFile" name="indexFile" type="file" class="file hidden" data-show-preview="false" required>
+								<button type="button" class="btn btn-primary" onclick="document.getElementById('indexFile').click()">Index fájl feltöltés</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="kt-more-advanced card">
+				<div class="card-body">
+					<div class="mb-3">
+						<label for="logsleep">Log (F12)</label>
+						<select name="logsleep" class="form-select small" id="logsleep">
+							<option value="-1">Log frissítés</option>
+							<option value="0">0 sec</option>
+							<option value="1">1 sec</option>
+							<option value="3">3 sec</option>
+							<option value="5">5 sec</option>
+							<option value="10">10 sec</option>
+							<option value="15">15 sec</option>
+							<option value="30">30 sec</option>
+							<option value="60">1 min</option>
+						</select>
+					</div>
+					<form action="/api/settings" class="needs-validation" novalidate>
+						<div class="mb-3">
+							<label for="testmodeText">Test mode</label>
+							<input name="testmode" type="number" class="form-control" id="testmodeText" placeholder="Test mode" readonly>
+						</div>
+						<div class="mb-3">
+							<label for="ctimText">Timeout</label>
+							<input name="ctim" type="number" class="form-control" id="ctimText" placeholder="Timeout" min="0" max="255" required>
+							<div class="invalid-feedback">Kötelező értéket megadni.</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-body">
+					<div class="mb-3" onclick="switchAdvanced(true)">
+						<label for="codeText">MAC cím:</label>&nbsp;<label id="macAddressDiv"></label>
+					</div>
+					<div class="mb-3">
+						<label for="codeText">Firmware verzió:</label>&nbsp;<label id="fwVersionDiv"></label>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; width: 200px;">
-			<div id="toastError" class="toast align-items-center hide" role="alert" aria-live="assertive" aria-atomic="true">
-				<div class="toast-header text-white bg-danger">
-					<strong class="me-auto">Hiba</strong>
-					<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-				</div>
-				<div class="toast-body" id="errorText">
-				</div>
+	</main>
+
+	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; width: 200px;">
+		<div id="toastInfo" class="toast align-items-center hide" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header text-white bg-success">
+				<strong id="infoTitle" class="me-auto"></strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body" id="infoText">
 			</div>
 		</div>
-
+	</div>
+	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; width: 200px;">
+		<div id="toastError" class="toast align-items-center hide" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header text-white bg-danger">
+				<strong class="me-auto">Hiba</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body" id="errorText">
+			</div>
+		</div>
+	</div>
 </body>
 </html>

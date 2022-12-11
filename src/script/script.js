@@ -421,7 +421,7 @@ function checkUpdate(releaseUrls) {
     showLoading('Frissítés folyamatban...');
 	ajax('GET', corsProxyUrl + releaseUrls[0],
 		response => {
-			let release = JSON.parse(response.responseText);
+			let release = JSON.parse(response.responseText).assets[0];
 			let url = release.browser_download_url;
 			let oReq = new XMLHttpRequest();
 			oReq.open("GET", corsProxyUrl + url + "&binary=true", true);

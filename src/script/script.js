@@ -295,7 +295,7 @@ function printInfo(e, div) {
 
 function jsonToForm(f, data) {
 	for(var prop in data) {
-		f.querySelectorAll('*[name=' + prop + ']').forEach((f)=>fillField(f));
+		f.querySelectorAll('*[name=' + prop + ']').forEach((field)=>{fillField(field);});
 	}
 }
 

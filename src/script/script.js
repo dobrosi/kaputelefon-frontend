@@ -294,17 +294,20 @@ function printInfo(e, div) {
 }
 
 function jsonToForm(f, data) {
-	for(var prop in data){
-		let field = f.querySelector('*[name=' + prop + ']');
-		if (field != null) {
-		    if (field.type === 'hidden') {
-		    } else if (field.type === 'checkbox') {
-                field.checked = stringToBoolean(data[prop]);
-            } else {
-                field.value = data[prop];
-			}
-		}
+	for(var prop in data) {
+		f.querySelectorAll('*[name=' + prop + ']').forEach((f)=>fillField(f));
 	}
+}
+
+function fillField(field) {
+   if (field != null) {
+      if (field.type === 'hidden') {
+      } else if (field.type === 'checkbox') {
+         field.checked = stringToBoolean(data[prop]);
+      } else {
+         field.value = data[prop];
+      }
+   }
 }
 
 function showInfo(msg, title = "") {

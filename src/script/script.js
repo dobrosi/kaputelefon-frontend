@@ -293,21 +293,21 @@ function printInfo(e, div) {
     document.getElementById(div).innerHTML = e;
 }
 
-function jsonToForm(f, data) {
-	for(var prop in data) {
-		f.querySelectorAll('*[name=' + prop + ']').forEach((field)=>{fillField(field);});
+function jsonToForm(form, data) {
+	for(let prop in data) {
+		form.querySelectorAll('*[name=' + prop + ']').forEach((field) => fillField(field, data[prop]));
 	}
 }
 
-function fillField(field) {
-   if (field != null) {
-      if (field.type === 'hidden') {
-      } else if (field.type === 'checkbox') {
-         field.checked = stringToBoolean(data[prop]);
-      } else {
-         field.value = data[prop];
-      }
-   }
+function fillField(field, v) {
+	if (field != null) {
+		if (field.type === 'hidden') {
+		} else if (field.type === 'checkbox') {
+			field.checked = stringToBoolean(v);
+		} else {
+			field.value = v;
+		}
+	}
 }
 
 function showInfo(msg, title = "") {

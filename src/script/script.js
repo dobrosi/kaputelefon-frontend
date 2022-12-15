@@ -205,7 +205,7 @@ function restart() {
 
 function factoryReset() {
     icon = 'cw';
-    ajax('GET', '/api/factory_reset', () => reload());
+    ajax('GET', '/api/factory_defaults');
 }
 
 function testCall() {

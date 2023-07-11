@@ -74,8 +74,8 @@
 								</select>
 							</div>
 							<div class="mb-3 codeBlock">
-								<label for="codeText">Kapukód</label>
-								<input name="code" type="number" class="form-control" id="codeText" placeholder="Kapukód" min="1" max="127" required>
+								<label for="codeText">Lakásszám</label>
+								<input name="code" type="number" class="form-control" id="codeText" placeholder="Lakásszám" min="1" max="127" required>
 								<div class="invalid-feedback">1-127 tartományban választott értéket kötelező megadni.</div>
 							</div>
 							<div class="mb-3">
@@ -231,52 +231,34 @@
 				<div class="accordion-body">
 					<form action="/api/settings" class="needs-validation" novalidate>
 						<div class="mb-3">
-							<label for="cvolText">Beep hangerő</label>
-							<input name="cvol" type="range" class="form-range" id="cvolText" placeholder="Beep hangerő" min="0" max="100" required>
-							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-						</div>
-						<div class="mb-3">
 							<label for="hvolText">Fejhallgató hangerő</label>
 							<input name="hvol" type="range" class="form-range" id="hvolText" placeholder="Fejhallgató hangerő" min="0" max="100" required>
 							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
 						</div>
 						<div class="mb-3">
-							<label for="vvolText">Vonali audió feszültség</label>
-							<input name="vvol" type="range" class="form-range" id="vvolText" placeholder="Vonali audió feszültség" min="0" max="100" required>
+							<label for="vvolText">Kültéri hangerő</label>
+							<input name="vvol" type="range" class="form-range" id="vvolText" placeholder="Kültéri hangerő" min="0" max="100" required>
 							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
 						</div>
 						<div class="mb-3">
-							<label for="lvolText">Vonali audió hangerő</label>
-							<input name="lvol" type="range" class="form-range" id="lvolText" placeholder="Vonali audió hangerő" min="0" max="100" required>
+							<label for="lvolText">Beltéri hangerő</label>
+							<input name="lvol" type="range" class="form-range" id="lvolText" placeholder="Beltéri hangerő" min="0" max="100" required>
 							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
-						</div>
-						<div class="mb-3">
-							<label for="hdpxText">HDPX</label>
-							<input name="hdpx" type="hidden" value="0">
-							<input name="hdpx" class="form-check-input" type="checkbox" value="1" id="hdpxText">
-						</div>
-						<!--
-						<div class="mb-3">
-							<label for="staText">STA</label>
-							<input name="sta" type="hidden" value="0">
-							<input name="sta" class="form-check-input" type="checkbox" value="1" id="staText">
-						</div>
-
-						<div class="mb-3">
-							<label for="voipText">VOIP</label>
-							<input name="voip" type="hidden" value="0">
-							<input name="voip" class="form-check-input" type="checkbox" value="1" id="voipText">
-						</div>
-						-->
-						<div class="mb-3">
-							<label for="flogText">FLOG</label>
-							<input name="flog" type="hidden" value="0">
-							<input name="flog" class="form-check-input" type="checkbox" value="1" id="flogText">
 						</div>
 						<div class="mb-3">
 							<label for="hdpxText">HLOG</label>
 							<input name="hlog" type="hidden" value="0">
 							<input name="hlog" class="form-check-input" type="checkbox" value="1" id="hlogText">
+						</div>
+						<div class="mb-3 kt-more-advanced">
+							<label for="hdpxText">HDPX</label>
+							<input name="hdpx" type="hidden" value="0">
+							<input name="hdpx" class="form-check-input" type="checkbox" value="1" id="hdpxText">
+						</div>
+						<div class="mb-3 kt-more-advanced">
+							<label for="flogText">FLOG</label>
+							<input name="flog" type="hidden" value="0">
+							<input name="flog" class="form-check-input" type="checkbox" value="1" id="flogText">
 						</div>
 						<div class="mb-3 kt-more-advanced">
 							<label for="dnscText">DNSC</label>
@@ -291,14 +273,19 @@
 						<!--
 						<div class="mb-3">
 							<label for="mvolText">Mikrofon hangerő</label>
-							<input name="mvol" type="number" class="form-control" id="mvolText" placeholder="Mikrofon hangerő" min="0" max="255" required>
-							<div class="invalid-feedback">0-255 tartományban választott értéket kötelező megadni.</div>
+							<input name="mvol" type="number" class="form-control" id="mvolText" placeholder="Mikrofon hangerő" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
 						</div>
 						-->
 						<div class="mb-3">
-							<label for="rvolText">Kapucsengő hangerő</label>
-							<input name="rvol" type="range" class="form-range" id="rvolText" placeholder="Ajtócsengő hangerő" min="0" max="255" required>
-							<div class="invalid-feedback">0-255 tartományban választott értéket kötelező megadni.</div>
+							<label for="rvolText">Ajtócsengő hangerő</label>
+							<input name="rvol" type="range" class="form-range" id="rvolText" placeholder="Ajtócsengő hangerő" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
+						</div>
+						<div class="mb-3">
+							<label for="cvolText">Konfiguráció jelzés hangerő</label>
+							<input name="cvol" type="range" class="form-range" id="cvolText" placeholder="Konfiguráció jelzés hangerő" min="0" max="100" required>
+							<div class="invalid-feedback">0-100 tartományban választott értéket kötelező megadni.</div>
 						</div>
 					</form>
 				</div>
